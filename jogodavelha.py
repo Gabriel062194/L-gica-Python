@@ -1,13 +1,3 @@
-tabuleiro = [[" " for _ in range(3)] for _ in range(3)]
-
-def mostrar_tabuleiro():
-    print("\nTabuleiro:\n\n")
-    for i in range(3):
-        print(" | ".join(tabuleiro[i]))
-        if i < 2:
-            print("_" * 9)
-        print()
-
 def jogar():
     jogador_atual = "X"
     jogadas = 0
@@ -22,3 +12,18 @@ def jogar():
         if tabuleiro[linha][coluna] != " ":
             print("Posição já ocupada! Tente novamente.")
             continue
+
+        tabuleiro[linha][coluna] = jogador_atual
+        jogadas += 1
+
+        if verificar_vitoria(jogador_atual):
+            mostrar_tabuleiro()
+            print(f"O jogador {jogador_atual} venceu!")
+            break
+
+        if jogadas == 9:
+            mostrar_tabuleiro()
+            print("Empate!")
+            break
+
+        jogador_atual = "O" if jogador_atual == "X" else "X"
