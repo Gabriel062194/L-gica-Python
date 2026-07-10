@@ -32,4 +32,17 @@ def main():
     filmes = []
     while True:
         exibir_menu()
-        opcao = 
+        opcao = input("Escolha uma opção: ")
+        if opçao == "1":
+            listar_filmes(filmes)
+        elif opçao == "2":
+            comprar_ingresso(filmes)
+        elif opçao == "3":
+            print("Saindo do programa...")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+if __name__ == "__ main__":
+    main()
+
+
