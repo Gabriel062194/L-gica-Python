@@ -81,49 +81,15 @@ def jogar(jogada):
         print(escolha_pessoa ["text"], escolha_pc)
         rodadas -= 1
     if testa_empate(escolha_pessoa, escolha_pc):
-        app_empate["bg"] = cor3
-    eli testa_vitoria_pessoa(escolha_pessoa)
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-    
-    
-    
-    
-
-    
-    
-    
-    
+        app_empate ["bg"] = cor3
     elif testa_vitoria_pessoa(escolha_pessoa, escolha_pc):
-        pontos_pessoa +=10
-        app_pessoa_linha["bg"] = cor4
+        pontos_pessoa = += 10
+        app_pessoa_linha ["bg"] = cor4
     elif testa_vitoria_pc(escolha_pessoa, escolha_pc):
-        pontos_pc += 10
-        app_pc_linha["bg"] = cor4
-
-
-
-
-
-
+        pontos_pc = += 10
+        app_pc_linha ["bg"] = cor4
     else:
-        terminar_jogo()
-
+        terminar_jogo()    
 
 
 def iniciar_jogo():
@@ -134,51 +100,54 @@ def iniciar_jogo():
     global icone_mao
     global icone_tesoura
 
-    icone_pedra = Image.open("./imagens/pedra.png")
-    icone_pedra = icone_pedra.resize((50,50),Image.Resampling.LANCZOS)
-    icone_pedra = ImageTk.PhotoImage(icone_pedra)
-    bnt_pedra = Button(frame_baixo,command=lambda: jogar("pedra"),width=50, height=50,
-                    image=icone_pedra, bg=cor0, fg=cor0,
-                    compound="center",font=("ivy 10 bold"),
-                    anchor="center", relief="flat")
-    bnt_pedra.place(x=15, y=60)
 
-    #icone_papel = Image.open("./imagens/papel.png")
+    icone_pedra = Image.open("./imagens/pedra.png")
+    icone_pedra = icone_pedra.resize((50,50), Image.Resampling.LANCZOS)
+    icone_pedra = ImageTk.PhotoImage(icone_pedra)
+    botao_pedra = Button(frame_baixo, command=lambda: jogar("pedra"), width=50, height=50,
+                         image=icone_pedra, bg=cor0, fg=cor0,
+                         compound="center", font=("Ivy 10 bold"),
+                         anchor="center", relief="flat")
+    botao_pedra.place(x=15, y=60)
 
     icone_mao = Image.open("./imagens/mao.png")
-    icone_mao= icone_mao.resize((50,50),Image.Resampling.LANCZOS)
+    icone_mao = icone_mao.resize((50,50), Image.Resampling.LANCZOS)
     icone_mao = ImageTk.PhotoImage(icone_mao)
-    bnt_mao = Button(frame_baixo,command=lambda: jogar("papel"), width=50, height=50,
-                    image=icone_mao, bg=cor0, fg=cor0,
-                    compound="center",font=("ivy 10 bold"),
-                    anchor="center", relief="flat")
-    bnt_mao.place(x=100, y=60)
-
+    botao_mao = Button(frame_baixo, command=lambda: jogar("papel"), width=50, height=50,
+                         image=icone_mao, bg=cor0, fg=cor0,
+                         compound="center", font=("Ivy 10 bold"),
+                         anchor="center", relief="flat")
+    botao_mao.place(x=100, y=60)
 
     icone_tesoura = Image.open("./imagens/tesoura.png")
-    icone_tesoura= icone_tesoura.resize((50,50),Image.Resampling.LANCZOS)
+    icone_tesoura = icone_tesoura.resize((50,50), Image.Resampling.LANCZOS)
     icone_tesoura = ImageTk.PhotoImage(icone_tesoura)
-    bnt_tesoura = Button(frame_baixo,command=lambda: jogar("tesoura"), width=50, height=50,
-                    image=icone_tesoura, bg=cor0, fg=cor0,
-                    compound="center",font=("ivy 10 bold"),
-                    anchor="center", relief="flat")
-    bnt_tesoura.place(x=185, y=60)
+    botao_tesoura = Button(frame_baixo, command=lambda: jogar("tesoura"), width=50, height=50,
+                           image=icone_tesoura, bg=cor0, fg=cor0,
+                           compound="center", font=("Ivy 10 bold"),
+                           anchor="center", relief="flat")
+    botao_tesoura.place(x=185, y=60)
 
 
-bnt_iniciar = Button(frame_baixo, width=30, height=2,
-                     command=iniciar_jogo,
-                   bg=cor1, fg=cor0,
-                   compound="center",font=("ivy 10 bold"),
-                   anchor="center", relief="flat",text="jogar")
+    botao_iniciar = Button(frame_baixo, width=30, height=2,
+                           command=iniciar_jogo,
+                           bg=cor1, fg=cor0,
+                           compound="center", font=("Ivy 10 bold"),
+                           anchor="center", relief="flat", text="Jogar")
+    botao_iniciar.place(x=5, y=130)
 
-bnt_iniciar.place(x=5, y=130)
 
-app_jogada_pc = Label(frame_baixo, text="", height=1,anchor="center",bg=cor0, fg=cor1, font=("ivy 10 bold"))
-app_jogada_pc.place(x=190,y=10)
+    app_jogada_pc = Label(frame_baixo, text="", height=1,
+                          anchor="center", bg=cor0, fg=cor1, font=("Ivy 10 bold"))
+    app_jogada_pc.place(x=190, y=10)
 
-app_jogada_pessoa = Label(frame_baixo,text="",height=1,anchor="center",bg=cor0,fg=cor1, font=("ivy 10 bold"))
-app_jogada_pessoa.place(x=10,y=10)
+    app_jogada_pessoa = Label(frame_baixo, text="", height=1,
+                              anchor="center", bg=cor0, fg=cor1, font=("Ivy 10 bold"))
+    app_jogada_pessoa.place(x=10, y=10)
 
-#app_vencedor = (frame_baixo,text="", height=1,)
-terminar_jogo
-janela.mainloop()
+
+    app_vencedor = Label(frame_baixo, text="", height=1,
+                         anchor="center", bg=cor0, fg=cor1, font=("Ivy 10 bold"))
+
+    terminar_jogo
+    janela.mainloop()
