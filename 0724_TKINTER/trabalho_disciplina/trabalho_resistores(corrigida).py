@@ -2,32 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 
 # Dicionário das cores
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Dicionário dos dígitos das cores
 DIGITOS = {
     "Preto": (0, "#000000"),
     "Marrom": (1, "#8B4513"),
@@ -58,6 +32,30 @@ MULTIPLICADORES = {
 TOLERANCIAS = {
     "Marrom": ("±1%", "#8B4513"),
     "Vermelho": ("±2%", "#FF0000"),
+    "Verde": ("±0.5%", "#008000"),
+    "Azul": ("±0.25%", "#0000FF"),
+    "Violeta": ("±0.1%", "#EE82EE"),
+    "Ouro": ("±5%", "#D4AF37"),
+    "Prata": ("±10%", "#C0C0C0")
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+     "#FF0000"),
     "Verde": ("±0.5%", "#008000"),
     "Azul": ("±0.25%", "#0000FF"),
     "Violeta": ("±0.1%", "#EE82EE"),
