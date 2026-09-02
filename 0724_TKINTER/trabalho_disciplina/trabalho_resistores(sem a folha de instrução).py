@@ -94,45 +94,17 @@ labels = ["1ª Faixa", "2ª Faixa", "Multiplicador", "Tolerância"]
 variaveis = [var_f1, var_f2, var_mult, var_tol]
 opcoes = [list(DIGITOS.keys()), list(DIGITOS.keys()), list(MULTIPLICADORES.keys()), list(TOLERANCIAS.keys())]
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 for i in range(4):
-    lbl = tk.Label(frame_controles, text=labels[i], font=("Arial", 9, "bold"))
-    lbl.grid(row=i, column=0, padx=10, pady=5, sticky="w")
-    
-    cb = ttk.Combobox(frame_controles, textvariable=variaveis[i], values=opcoes[i], state="readonly", width=15)
-    cb.grid(row=i, column=1, padx=10, pady=5)
 
-# --- Label de Resultado ---
+# label de resultado
 lbl_resultado = tk.Label(root, text="", font=("Arial", 16, "bold"), fg="#333333")
+lbl = tk.Label(frame_controles, text=labels[i], font=("Arial", 9, "bold"))
+lbl.grid(row=i, column=0, padx=10, pady=5, sticky="w")
+cb = ttk.Combobox(frame_controles, textvariable=variaveis[i], values=opcoes[i], state="readonly", width=15)
+cb.grid(row=i, column=1, padx=10, pady=5)
 lbl_resultado.pack(pady=15)
 
-# Forçar primeira atualização da tela
+# Forçar a primeira atualização de tela
 atualizar_resistor()
 
 root.mainloop()
