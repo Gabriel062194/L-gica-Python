@@ -39,45 +39,20 @@ TOLERANCIAS = {
     "Prata": ("±10%", "#C0C0C0")
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-     "#FF0000"),
-    "Verde": ("±0.5%", "#008000"),
-    "Azul": ("±0.25%", "#0000FF"),
-    "Violeta": ("±0.1%", "#EE82EE"),
-    "Ouro": ("±5%", "#D4AF37"),
-    "Prata": ("±10%", "#C0C0C0")
-}
-
-
 def atualizar_resistor(*args):
-    # 1 - Obter as cores selecionadas
+    #1 - Obter as cores selecionadas
     c1 = var_f1.get()
     c2 = var_f2.get()
     cm = var_mult.get()
     ct = var_tol.get()
 
-    # 2 - Atualizar as cores das faixas no Canvas
+    #2 - Atualizar as cores das faixas no Canvas
     canvas.itemconfig(faixa1, fill=DIGITOS[c1][1])
     canvas.itemconfig(faixa2, fill=DIGITOS[c2][1])
     canvas.itemconfig(faixam, fill=MULTIPLICADORES[cm][1])
     canvas.itemconfig(faixat, fill=TOLERANCIAS[ct][1])
 
-    # 3 - Calcular o valor da resistência
+    #3 - Cálculo do valor da resistência
     val1 = DIGITOS[c1][0]
     val2 = DIGITOS[c2][0]
     mult = MULTIPLICADORES[cm][0]
@@ -85,7 +60,7 @@ def atualizar_resistor(*args):
 
     resistencia = (val1 * 10 + val2) * mult
 
-    # 4 - Formatar o valor da resistência
+    #4 - Formatar o valor da resistência
     if resistencia >= 1_000_000:
         res_str = f"{resistencia / 1_000_000:.2f} MΩ"
     elif resistencia >= 1_000:
@@ -95,26 +70,18 @@ def atualizar_resistor(*args):
     else:
         res_str = f"{resistencia:.2f} Ω"
 
-    # 5 - Atualizar o resultado
+    #5 - Atualizando o resultado
     lbl_resultado.config(
         text=f"Resultado: {res_str} {tol}"
     )
 
-
-# ==========================================================
-# CONFIGURAÇÃO DA JANELA PRINCIPAL
-# ==========================================================
-
+# Configuração da janela principal
 root = tk.Tk()
 root.title("Calculadora de Resistores")
 root.geometry("450x430")
 root.resizable(False, False)
 
-
-# ==========================================================
-# DESENHO DO RESISTOR
-# ==========================================================
-
+# Desenho do resistor
 canvas = tk.Canvas(
     root,
     width=400,
@@ -122,7 +89,6 @@ canvas = tk.Canvas(
     bg="#F0F0F0"
 )
 canvas.pack(pady=20)
-
 # Fios do resistor
 canvas.create_line(
     20, 60,
@@ -130,7 +96,6 @@ canvas.create_line(
     width=6,
     fill="#A0A0A0"
 )
-
 # Corpo do resistor
 canvas.create_rectangle(
     100, 30,
@@ -139,47 +104,35 @@ canvas.create_rectangle(
     outline="#D2B48C",
     width=2
 )
-
 # Faixas coloridas
 faixa1 = canvas.create_rectangle(
     125, 30, 140, 90,
     fill="#000000",
     width=0
 )
-
 faixa2 = canvas.create_rectangle(
     160, 30, 175, 90,
     fill="#000000",
     width=0
 )
-
 faixam = canvas.create_rectangle(
     195, 30, 210, 90,
     fill="#000000",
     width=0
 )
-
 faixat = canvas.create_rectangle(
     260, 30, 275, 90,
     fill="#000000",
     width=0
 )
 
-
-# ==========================================================
-# VARIÁVEIS DOS MENUS
-# ==========================================================
-
+# Variáveis dos menus
 var_f1 = tk.StringVar(value="Marrom")
 var_f2 = tk.StringVar(value="Preto")
 var_mult = tk.StringVar(value="Vermelho")
 var_tol = tk.StringVar(value="Ouro")
 
-
-# ==========================================================
-# INTERFACE DOS CONTROLES
-# ==========================================================
-
+# Interface dos controles
 frame_controles = tk.Frame(root)
 frame_controles.pack(pady=5)
 
@@ -189,14 +142,12 @@ labels = [
     "Multiplicador",
     "Tolerância"
 ]
-
 variaveis = [
     var_f1,
     var_f2,
     var_mult,
     var_tol
 ]
-
 opcoes = [
     list(DIGITOS.keys()),
     list(DIGITOS.keys()),
@@ -234,34 +185,23 @@ for i in range(4):
         pady=5
     )
 
-
-# ==========================================================
-# RESULTADO
-# ==========================================================
-
+# Resultado
 lbl_resultado = tk.Label(
     root,
     text="",
     font=("Arial", 16, "bold"),
     fg="#333333"
 )
-
 lbl_resultado.pack(pady=15)
 
-
-# ==========================================================
-# ATUALIZAÇÃO AUTOMÁTICA
-# ==========================================================
-
+# Atualização automática
 var_f1.trace_add("write", atualizar_resistor)
 var_f2.trace_add("write", atualizar_resistor)
 var_mult.trace_add("write", atualizar_resistor)
 var_tol.trace_add("write", atualizar_resistor)
 
-
 # Primeira atualização
 atualizar_resistor()
-
 
 # Iniciar programa
 root.mainloop()
