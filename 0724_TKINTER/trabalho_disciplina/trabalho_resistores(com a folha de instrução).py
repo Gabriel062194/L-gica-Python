@@ -25,31 +25,8 @@ TOLERANCIAS = {
     "Prata": {"valor": 10, "texto": "±10%", "hex": "#C0C0C0"},
 }
 
-              
-
-
-
-          
-        
-           
-            
-         
-
-
-# ============================================================
-# FUNÇÕES DE CÁLCULO
-# ============================================================
-
-def calcular_resistencia(cor1, cor2, cor3, tolerancia):
-    """
-    Calcula o valor do resistor a partir das quatro faixas.
-    As três primeiras faixas representam:
-        faixa 1 -> primeiro dígito
-        faixa 2 -> segundo dígito
-        faixa 3 -> multiplicador
-        faixa 4 -> tolerância
-    """
-
+# Funções de cálculo
+def calcular_resistencia(cor1, cor2, cor3, tolerancia): # Cálculo do valor do resistor a partir das quatro faixas.
     digito1 = CORES[cor1]["valor"]
     digito2 = CORES[cor2]["valor"]
     multiplicador = CORES[cor3]["multiplicador"]
@@ -58,54 +35,38 @@ def calcular_resistencia(cor1, cor2, cor3, tolerancia):
 
     return valor
 
-
-def formatar_resistencia(valor):
-    """Converte o valor para Ω, kΩ ou MΩ."""
-
+def formatar_resistencia(valor): # Conversão de valores para Ω, kΩ ou MΩ.
     if valor >= 1_000_000:
         return f"{valor / 1_000_000:g} MΩ"
-
     elif valor >= 1_000:
         return f"{valor / 1_000:g} kΩ"
-
     else:
         return f"{valor:g} Ω"
 
-
-def valor_para_cores(valor):
-    """
-    Converte um valor de resistência para as três primeiras
-    faixas do resistor.
-    """
-
+def valor_para_cores(valor): # Conversão da resistência para um valor que se encaixe nas três primeiras faixas.
     if valor <= 0:
         raise ValueError("O valor deve ser maior que zero.")
-
-    # Encontramos um multiplicador que permita representar
-    # o valor usando exatamente dois dígitos.
+    # Multiplicador que permite usar dois números para representar o valor.
     multiplicador = 1
 
     while valor / multiplicador >= 100:
         multiplicador *= 10
-
     while valor / multiplicador < 10:
         multiplicador /= 10
 
     numero = valor / multiplicador
 
-    # O valor precisa ser representável por dois dígitos.
+    # Representação por dois números.
     numero_inteiro = round(numero)
 
     valor_calculado = numero_inteiro * multiplicador
 
     if abs(valor_calculado - valor) > 0.000001:
         raise ValueError(
-            "O valor informado não pode ser representado "
-            "exatamente por um resistor de 4 faixas."
+            "O valor informado não poderá ser representado com exatidão por esse resistor."
         )
-
     if numero_inteiro < 10 or numero_inteiro > 99:
-        raise ValueError("Valor fora do intervalo permitido.")
+        raise ValueError("Valor fora do intervalo concedido.")
 
     primeiro = numero_inteiro // 10
     segundo = numero_inteiro % 10
