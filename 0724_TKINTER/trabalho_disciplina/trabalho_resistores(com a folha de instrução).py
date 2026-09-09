@@ -71,28 +71,26 @@ def valor_para_cores(valor): # Conversão da resistência para um valor que se e
     primeiro = numero_inteiro // 10
     segundo = numero_inteiro % 10
 
-    # Descobre as cores correspondentes aos dígitos
+    # Cores são correspondentes aos dígitos
     cor1 = None
     cor2 = None
     cor3 = None
 
     for nome, dados in CORES.items():
-
         if dados["valor"] == primeiro:
             cor1 = nome
-
         if dados["valor"] == segundo:
             cor2 = nome
-
         if dados["multiplicador"] == multiplicador:
             cor3 = nome
-
     if not cor1 or not cor2 or not cor3:
         raise ValueError(
-            "Não foi possível encontrar as cores correspondentes."
+            "Não foi possível encontrar as respectivas cores."
         )
 
     return cor1, cor2, cor3
+
+# Interface
 
 
 # ============================================================
