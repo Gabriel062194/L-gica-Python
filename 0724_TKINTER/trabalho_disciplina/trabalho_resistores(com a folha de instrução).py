@@ -90,17 +90,9 @@ def valor_para_cores(valor): # Conversão da resistência para um valor que se e
 
     return cor1, cor2, cor3
 
-# Interface
-
-
-# ============================================================
-# INTERFACE GRÁFICA
-# ============================================================
-
+# Interface gráfica
 class AplicacaoResistor:
-
     def __init__(self, root):
-
         self.root = root
         self.root.title("Calculadora de Resistores")
         self.root.geometry("850x650")
@@ -112,13 +104,8 @@ class AplicacaoResistor:
 
         self.atualizar_modo()
 
-
-    # --------------------------------------------------------
-    # INTERFACE PRINCIPAL
-    # --------------------------------------------------------
-
+# Interface principal
     def criar_interface(self):
-
         titulo = tk.Label(
             self.root,
             text="Calculadora de Código de Cores de Resistores",
@@ -130,18 +117,16 @@ class AplicacaoResistor:
 
         subtitulo = tk.Label(
             self.root,
-            text="Escolha um dos modos para calcular o resistor",
+            text="Escolha um dos modos abaixo para calcular o resistor de quatro faixas",
             font=("Arial", 11),
             fg="#555555"
         )
 
+        titulo.pack(pady=15)
+
         subtitulo.pack()
 
-
-        # ====================================================
-        # SELEÇÃO DO MODO
-        # ====================================================
-
+# Modo de seleção
         frame_modo = tk.LabelFrame(
             self.root,
             text="Modo de operação",
@@ -170,11 +155,7 @@ class AplicacaoResistor:
             font=("Arial", 11)
         ).pack(side="left", padx=30)
 
-
-        # ====================================================
-        # ÁREA DOS MODOS
-        # ====================================================
-
+# Área dos modos
         self.frame_cores = tk.LabelFrame(
             self.root,
             text="Entrada de cores",
@@ -189,7 +170,6 @@ class AplicacaoResistor:
             pady=5
         )
 
-
         self.frame_valor = tk.LabelFrame(
             self.root,
             text="Entrada de valor",
@@ -198,32 +178,25 @@ class AplicacaoResistor:
             pady=15
         )
 
-
-        # ----------------------------------------------------
-        # MODO CORES → VALOR
-        # ----------------------------------------------------
-
+# Cores → valor (modo)
         self.combo_cor1 = self.criar_combo(
             self.frame_cores,
-            "1ª faixa:",
+            "1ª faixa: ",
             list(CORES.keys())
         )
-
         self.combo_cor2 = self.criar_combo(
             self.frame_cores,
-            "2ª faixa:",
+            "2ª faixa: ",
             list(CORES.keys())
         )
-
         self.combo_cor3 = self.criar_combo(
             self.frame_cores,
-            "3ª faixa:",
+            "3ª faixa: ",
             list(CORES.keys())
         )
-
         self.combo_tol = self.criar_combo(
             self.frame_cores,
-            "Tolerância:",
+            "Tolerância: ",
             list(TOLERANCIAS.keys())
         )
 
@@ -247,49 +220,38 @@ class AplicacaoResistor:
 
         btn_calcular.pack(pady=10)
 
-
-        # ----------------------------------------------------
-        # MODO VALOR → CORES
-        # ----------------------------------------------------
-
+# Valor → cores (modo)
         tk.Label(
             self.frame_valor,
-            text="Valor da resistência:",
+            text="Valor da resistência: ",
             font=("Arial", 11)
         ).grid(row=0, column=0, padx=10, pady=10)
-
         self.entrada_valor = tk.Entry(
             self.frame_valor,
             font=("Arial", 12),
             width=15
         )
-
         self.entrada_valor.grid(
             row=0,
             column=1,
             padx=10
         )
-
         tk.Label(
             self.frame_valor,
             text="Ω",
             font=("Arial", 11, "bold")
         ).grid(row=0, column=2)
-
-
         tk.Label(
             self.frame_valor,
-            text="Tolerância:",
+            text="Tolerância: ",
             font=("Arial", 11)
         ).grid(row=1, column=0, padx=10, pady=10)
-
         self.combo_tol_valor = ttk.Combobox(
             self.frame_valor,
             values=list(TOLERANCIAS.keys()),
             state="readonly",
             width=15
         )
-
         self.combo_tol_valor.grid(
             row=1,
             column=1,
@@ -310,7 +272,6 @@ class AplicacaoResistor:
             pady=7,
             cursor="hand2"
         )
-
         btn_converter.grid(
             row=2,
             column=0,
@@ -318,25 +279,17 @@ class AplicacaoResistor:
             pady=10
         )
 
-
-        # ====================================================
-        # RESULTADO
-        # ====================================================
-
+# Resultado final
         self.label_resultado = tk.Label(
             self.root,
-            text="Resultado aparecerá aqui",
+            text="O resultado será este aqui",
             font=("Arial", 15, "bold"),
             fg="#111827"
         )
 
         self.label_resultado.pack(pady=12)
 
-
-        # ====================================================
-        # DESENHO DO RESISTOR
-        # ====================================================
-
+# Desenho do resistor
         frame_desenho = tk.LabelFrame(
             self.root,
             text="Representação visual",
@@ -351,7 +304,6 @@ class AplicacaoResistor:
             padx=30,
             pady=5
         )
-
         self.canvas = tk.Canvas(
             frame_desenho,
             width=750,
@@ -369,13 +321,8 @@ class AplicacaoResistor:
             "Dourado"
         )
 
-
-    # ========================================================
-    # CRIA COMBOBOX
-    # ========================================================
-
+# Cria a Combobox
     def criar_combo(self, parent, texto, valores):
-
         frame = tk.Frame(parent)
         frame.pack(side="left", padx=8)
 
@@ -384,7 +331,6 @@ class AplicacaoResistor:
             text=texto,
             font=("Arial", 10)
         ).pack()
-
         combo = ttk.Combobox(
             frame,
             values=valores,
@@ -395,6 +341,19 @@ class AplicacaoResistor:
         combo.pack()
 
         return combo
+
+
+    
+        
+        
+
+        
+
+        
+
+        
+
+    
 
 
     # ========================================================
