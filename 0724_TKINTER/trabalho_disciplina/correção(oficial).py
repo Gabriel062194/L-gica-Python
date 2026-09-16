@@ -1,22 +1,18 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-
-# ============================================================
-# TABELAS DO CÓDIGO DE CORES
-# ============================================================
-
+# TABELA DO CÓDIGO DE CORES
 CORES = {
-    "Preto": "#000000",
-    "Marrom": "#8B4513",
-    "Vermelho": "#FF0000",
-    "Laranja": "#FF8C00",
-    "Amarelo": "#FFD700",
-    "Verde": "#008000",
-    "Azul": "#0000FF",
-    "Violeta": "#8A2BE2",
-    "Cinza": "#808080",
-    "Branco": "#FFFFFF",
+    "Preto" "#000000",
+    "Marrom" "#8B4513",
+    "Vermelho" "#FF0000",
+    "Laranja" "#FF8C00",
+    "Amarelo" "#FFD700",
+    "Verde" "#008000",
+    "Azul" "#0000FF",
+    "Violeta" "#8A2BE2",
+    "Cinza" "#808080",
+    "Branco" "#FFFFFF"
 }
 
 DIGITOS = {
@@ -29,7 +25,7 @@ DIGITOS = {
     "Azul": 6,
     "Violeta": 7,
     "Cinza": 8,
-    "Branco": 9,
+    "Branco": 9
 }
 
 MULTIPLICADORES = {
@@ -44,7 +40,7 @@ MULTIPLICADORES = {
     "Cinza": 100_000_000,
     "Branco": 1_000_000_000,
     "Dourado": 0.1,
-    "Prata": 0.01,
+    "Prata": 0.01
 }
 
 TOLERANCIAS = {
@@ -58,51 +54,27 @@ TOLERANCIAS = {
     "Prata": 10,
 }
 
-
-# ============================================================
 # FUNÇÕES DE CÁLCULO
-# ============================================================
+def calcular_resistencia(cor1, cor2, cor3): # converte as primeiras faixas em um valor de resistência.
 
-def calcular_resistencia(cor1, cor2, cor3):
-    """
-    Converte as três primeiras faixas em um valor de resistência.
-    Exemplo:
-        Vermelho, Vermelho, Marrom
-        2 2 x 10 = 220 Ω
-    """
     valor = (DIGITOS[cor1] * 100 +
              DIGITOS[cor2] * 10 +
              DIGITOS[cor3])
 
     return valor
 
-
-def calcular_valor_por_cores(cor1, cor2, cor3):
-    """
-    Calcula o valor final da resistência a partir das três
-    faixas significativas.
-    """
+def calcular_valor_por_cores(cor1, cor2, cor3): # calcula o valor final a partir das três faixas significativas.
     valor_base = calcular_resistencia(cor1, cor2, cor3)
 
-    # A terceira faixa funciona como multiplicador.
+    # multiplicador é como a terceira faixa funciona.
     return valor_base * 1
 
-
-def resistencia_para_cores(valor):
-    """
-    Converte um valor de resistência para três faixas
-    significativas.
-
-    O valor é normalizado para a forma:
-        AB x 10^C
-
-    Exemplos:
-        3300 -> 33 x 100 -> Laranja, Laranja, Vermelho
-        4700 -> 47 x 100 -> Amarelo, Violeta, Vermelho
-    """
+def resistencia_para_cores(valor): # um valor de resistência é convertido para as três faixas significativas.
 
     if valor <= 0:
-        raise ValueError("O valor deve ser maior que zero.")
+        raise ValueError("O valor há de ser maior que zero.")
+
+    
 
     # Procuramos uma representação com duas casas significativas.
     melhor = None
