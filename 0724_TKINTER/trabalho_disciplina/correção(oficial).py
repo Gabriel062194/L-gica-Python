@@ -208,10 +208,6 @@ def criar_estilo(self):
             variable=self.modo,
             value="cores",
             command=self.atualizar_modo
-        )
-
-
-            command=self.atualizar_modo
         ).pack(side="left", padx=15)
 
         ttk.Radiobutton(
@@ -222,9 +218,8 @@ def criar_estilo(self):
             command=self.atualizar_modo
         ).pack(side="left", padx=15)
 
-        # ----------------------------------------------------
-        # ÁREA PRINCIPAL
-        # ----------------------------------------------------
+# ÁREA PRINCIPAL
+
 
         self.frame_principal = tk.Frame(
             self.root,
