@@ -74,9 +74,7 @@ def resistencia_para_cores(valor): # um valor de resistência é convertido para
     if valor <= 0:
         raise ValueError("O valor há de ser maior que zero.")
 
-    
-
-    # Procuramos uma representação com duas casas significativas.
+    # representação com duas casas.
     melhor = None
 
     for cor1, d1 in DIGITOS.items():
@@ -92,48 +90,32 @@ def resistencia_para_cores(valor): # um valor de resistência é convertido para
                 if abs(calculado - valor) < 0.000001:
                     return cor1, cor2, cor3
 
-                # Guarda a combinação mais próxima
+                # combinação mais próxima é guardada
                 erro = abs(calculado - valor)
 
                 if melhor is None or erro < melhor[0]:
                     melhor = (erro, cor1, cor2, cor3)
 
     raise ValueError(
-        "Não foi possível representar esse valor usando "
-        "o código de 3 faixas."
+        "Não foi possível representar esse valor usando o código de 3 faixas."
     )
 
-
 def formatar_resistencia(valor):
-    """
-    Exibe a resistência utilizando Ω, kΩ ou MΩ.
-    """
-
     if valor >= 1_000_000:
         return f"{valor / 1_000_000:g} MΩ"
-
     if valor >= 1_000:
         return f"{valor / 1_000:g} kΩ"
 
     return f"{valor:g} Ω"
 
-
 def encontrar_cor_tolerancia(valor):
-    """
-    Retorna a cor correspondente à tolerância informada.
-    """
-
     for cor, tolerancia in TOLERANCIAS.items():
         if tolerancia == valor:
             return cor
 
     raise ValueError("Tolerância inválida.")
 
-
-# ============================================================
 # INTERFACE GRÁFICA
-# ============================================================
-
 class AplicacaoResistor:
 
     def __init__(self, root):
@@ -151,17 +133,14 @@ class AplicacaoResistor:
 
         self.atualizar_modo()
 
-    # --------------------------------------------------------
-    # ESTILO
-    # --------------------------------------------------------
+# ESTILO
+def criar_estilo(self):
+    style = ttk.Style()
 
-    def criar_estilo(self):
-        style = ttk.Style()
-
-        try:
-            style.theme_use("clam")
-        except tk.TclError:
-            pass
+    try:
+        style.theme_use("clam")
+    except tk.TclError:
+        pass
 
         style.configure(
             "TCombobox",
@@ -170,13 +149,11 @@ class AplicacaoResistor:
             foreground="black",
             padding=5
         )
-
         style.configure(
             "TButton",
             font=("Arial", 11, "bold"),
             padding=8
         )
-
         style.configure(
             "TRadiobutton",
             background="#20242a",
@@ -184,10 +161,7 @@ class AplicacaoResistor:
             font=("Arial", 11)
         )
 
-    # --------------------------------------------------------
-    # INTERFACE
-    # --------------------------------------------------------
-
+# INTERFACE
     def criar_interface(self):
 
         titulo = tk.Label(
@@ -197,6 +171,7 @@ class AplicacaoResistor:
             bg="#20242a",
             fg="#00d9ff"
         )
+
         titulo.pack(pady=(20, 5))
 
         subtitulo = tk.Label(
@@ -206,18 +181,17 @@ class AplicacaoResistor:
             bg="#20242a",
             fg="#cccccc"
         )
+
         subtitulo.pack(pady=(0, 15))
 
-        # ----------------------------------------------------
-        # ESCOLHA DO MODO
-        # ----------------------------------------------------
-
+# ESCOLHA DO MODO
         frame_modo = tk.Frame(
             self.root,
             bg="#2b3038",
             padx=15,
             pady=10
         )
+
         frame_modo.pack(fill="x", padx=30)
 
         tk.Label(
@@ -233,6 +207,10 @@ class AplicacaoResistor:
             text="Cores → Valor",
             variable=self.modo,
             value="cores",
+            command=self.atualizar_modo
+        )
+
+
             command=self.atualizar_modo
         ).pack(side="left", padx=15)
 
