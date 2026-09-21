@@ -1,10 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+# TABELA DO CÓDIGO DE CORES
 
-# ============================================================
-# TABELAS DO CÓDIGO DE CORES
-# ============================================================
 
 CORES = {
     "Preto": "#000000",
