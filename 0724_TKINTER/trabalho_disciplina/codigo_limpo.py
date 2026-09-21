@@ -3,7 +3,6 @@ from tkinter import ttk, messagebox
 
 # TABELA DO CÓDIGO DE CORES
 
-
 CORES = {
     "Preto": "#000000",
     "Marrom": "#8B4513",
@@ -58,28 +57,14 @@ TOLERANCIAS = {
     "Prata": 10,
 }
 
-
-# ============================================================
 # FUNÇÕES DE CÁLCULO
-# ============================================================
 
-def calcular_valor_por_cores(cor1, cor2, cor3):
-    """
-    Calcula o valor de um resistor de 3 faixas.
-
-    Exemplo:
-        Marrom, Preto, Vermelho
-
-        1 0 × 100
-        = 1000 Ω
-        = 1 kΩ
-    """
+def calcular_valor_por_cores(cor1, cor2, cor3): # Calcula o valor das 3 faixas.
 
     if cor1 not in DIGITOS or cor2 not in DIGITOS:
-        raise ValueError("As duas primeiras faixas devem ser cores de dígitos.")
-
+        raise ValueError("As duas primeiras faixas devem ser cores dos dígitos.")
     if cor3 not in MULTIPLICADORES:
-        raise ValueError("A terceira faixa deve ser um multiplicador.")
+        raise ValueError("A terceira faixa deve ser de um multiplicador.")
 
     valor_base = DIGITOS[cor1] * 10 + DIGITOS[cor2]
 
@@ -90,63 +75,35 @@ def calcular_valor_por_cores(cor1, cor2, cor3):
 
     return valor_base * MULTIPLICADORES[cor3]
 
-
-def formatar_resistencia(valor):
-    """
-    Formata a resistência usando Ω, kΩ ou MΩ.
-    """
+def formatar_resistencia(valor): # Formata a resistência usando os símbolos de Ω, kΩ ou MΩ.
 
     if valor >= 1_000_000:
         return f"{valor / 1_000_000:g} MΩ"
-
     if valor >= 1_000:
         return f"{valor / 1_000:g} kΩ"
 
     return f"{valor:g} Ω"
 
-
-def resistencia_para_cores(valor):
-    """
-    Converte uma resistência para três faixas.
-
-    Exemplos:
-
-        100 Ω
-        -> Marrom, Preto, Marrom
-
-        3300 Ω
-        -> Laranja, Laranja, Vermelho
-
-        4700 Ω
-        -> Amarelo, Violeta, Vermelho
-
-        1 MΩ
-        -> Marrom, Preto, Azul
-    """
+def resistencia_para_cores(valor): # Conversão de resistência para 3 faixas.
 
     if valor <= 0:
         raise ValueError("O valor deve ser maior que zero.")
 
-    # Trabalhamos com valores inteiros quando possível.
+    # VALORES INTEIROS QUANDO POSSÍVEL
     valor_original = valor
 
-    # Procuramos todas as combinações possíveis.
+    # COMBINAÇÕES POSSÍVEIS E PERTINENTES
     melhor = None
 
     for cor1, d1 in DIGITOS.items():
-
         for cor2, d2 in DIGITOS.items():
-
             significativos = d1 * 10 + d2
 
-            # 00 não representa um resistor válido.
+            # O número 00 não representa a validade de um resistor.
             if significativos == 0:
                 continue
-
             for cor3, multiplicador in MULTIPLICADORES.items():
-
                 calculado = significativos * multiplicador
-
                 erro = abs(calculado - valor_original)
 
                 if melhor is None or erro < melhor[0]:
