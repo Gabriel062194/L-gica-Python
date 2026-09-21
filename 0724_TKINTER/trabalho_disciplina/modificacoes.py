@@ -1,10 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-
-# ============================================================
-# TABELAS DO CÓDIGO DE CORES
-# ============================================================
+# TABELA DO CÓDIGO DAS RESPECTIVAS CORES PARA OS RESISTORES
 
 CORES = {
     "Preto": "#000000",
@@ -18,8 +15,9 @@ CORES = {
     "Cinza": "#808080",
     "Branco": "#FFFFFF",
     "Dourado": "#FFD700",
-    "Prata": "#C0C0C0",
+    "Prata": "#C0C0C0"
 }
+
 
 DIGITOS = {
     "Preto": 0,
