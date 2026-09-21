@@ -1,18 +1,24 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-# TABELA DO CÓDIGO DE CORES
+
+# ============================================================
+# TABELAS DO CÓDIGO DE CORES
+# ============================================================
+
 CORES = {
-    "Preto" "#000000",
-    "Marrom" "#8B4513",
-    "Vermelho" "#FF0000",
-    "Laranja" "#FF8C00",
-    "Amarelo" "#FFD700",
-    "Verde" "#008000",
-    "Azul" "#0000FF",
-    "Violeta" "#8A2BE2",
-    "Cinza" "#808080",
-    "Branco" "#FFFFFF"
+    "Preto": "#000000",
+    "Marrom": "#8B4513",
+    "Vermelho": "#FF0000",
+    "Laranja": "#FF8C00",
+    "Amarelo": "#FFD700",
+    "Verde": "#008000",
+    "Azul": "#0000FF",
+    "Violeta": "#8A2BE2",
+    "Cinza": "#808080",
+    "Branco": "#FFFFFF",
+    "Dourado": "#FFD700",
+    "Prata": "#C0C0C0",
 }
 
 DIGITOS = {
@@ -25,7 +31,7 @@ DIGITOS = {
     "Azul": 6,
     "Violeta": 7,
     "Cinza": 8,
-    "Branco": 9
+    "Branco": 9,
 }
 
 MULTIPLICADORES = {
@@ -40,7 +46,7 @@ MULTIPLICADORES = {
     "Cinza": 100_000_000,
     "Branco": 1_000_000_000,
     "Dourado": 0.1,
-    "Prata": 0.01
+    "Prata": 0.01,
 }
 
 TOLERANCIAS = {
@@ -54,71 +60,159 @@ TOLERANCIAS = {
     "Prata": 10,
 }
 
+
+# ============================================================
 # FUNÇÕES DE CÁLCULO
-def calcular_resistencia(cor1, cor2, cor3): # converte as primeiras faixas em um valor de resistência.
+# ============================================================
 
-    valor = (DIGITOS[cor1] * 100 +
-             DIGITOS[cor2] * 10 +
-             DIGITOS[cor3])
+def calcular_valor_por_cores(cor1, cor2, cor3):
+    """
+    Calcula o valor de um resistor de 3 faixas.
 
-    return valor
+    Exemplo:
+        Marrom, Preto, Vermelho
 
-def calcular_valor_por_cores(cor1, cor2, cor3): # calcula o valor final a partir das três faixas significativas.
-    valor_base = calcular_resistencia(cor1, cor2, cor3)
+        1 0 × 100
+        = 1000 Ω
+        = 1 kΩ
+    """
 
-    # multiplicador é como a terceira faixa funciona.
-    return valor_base * 1
+    if cor1 not in DIGITOS or cor2 not in DIGITOS:
+        raise ValueError("As duas primeiras faixas devem ser cores de dígitos.")
 
-def resistencia_para_cores(valor): # um valor de resistência é convertido para as três faixas significativas.
+    if cor3 not in MULTIPLICADORES:
+        raise ValueError("A terceira faixa deve ser um multiplicador.")
 
-    if valor <= 0:
-        raise ValueError("O valor há de ser maior que zero.")
+    valor_base = DIGITOS[cor1] * 10 + DIGITOS[cor2]
 
-    # representação com duas casas.
-    melhor = None
+    if valor_base == 0:
+        raise ValueError(
+            "As duas primeiras faixas não podem formar o valor 00."
+        )
 
-    for cor1, d1 in DIGITOS.items():
-        for cor2, d2 in DIGITOS.items():
-            significativos = d1 * 10 + d2
+    return valor_base * MULTIPLICADORES[cor3]
 
-            if significativos == 0:
-                continue
-
-            for cor3, multiplicador in MULTIPLICADORES.items():
-                calculado = significativos * multiplicador
-
-                if abs(calculado - valor) < 0.000001:
-                    return cor1, cor2, cor3
-
-                # combinação mais próxima é guardada
-                erro = abs(calculado - valor)
-
-                if melhor is None or erro < melhor[0]:
-                    melhor = (erro, cor1, cor2, cor3)
-
-    raise ValueError(
-        "Não foi possível representar esse valor usando o código de 3 faixas."
-    )
 
 def formatar_resistencia(valor):
+    """
+    Formata a resistência usando Ω, kΩ ou MΩ.
+    """
+
     if valor >= 1_000_000:
         return f"{valor / 1_000_000:g} MΩ"
+
     if valor >= 1_000:
         return f"{valor / 1_000:g} kΩ"
 
     return f"{valor:g} Ω"
 
-def encontrar_cor_tolerancia(valor):
-    for cor, tolerancia in TOLERANCIAS.items():
-        if tolerancia == valor:
-            return cor
 
-    raise ValueError("Tolerância inválida.")
+def resistencia_para_cores(valor):
+    """
+    Converte uma resistência para três faixas.
 
+    Exemplos:
+
+        100 Ω
+        -> Marrom, Preto, Marrom
+
+        3300 Ω
+        -> Laranja, Laranja, Vermelho
+
+        4700 Ω
+        -> Amarelo, Violeta, Vermelho
+
+        1 MΩ
+        -> Marrom, Preto, Azul
+    """
+
+    if valor <= 0:
+        raise ValueError("O valor deve ser maior que zero.")
+
+    # Trabalhamos com valores inteiros quando possível.
+    valor_original = valor
+
+    # Procuramos todas as combinações possíveis.
+    melhor = None
+
+    for cor1, d1 in DIGITOS.items():
+
+        for cor2, d2 in DIGITOS.items():
+
+            significativos = d1 * 10 + d2
+
+            # 00 não representa um resistor válido.
+            if significativos == 0:
+                continue
+
+            for cor3, multiplicador in MULTIPLICADORES.items():
+
+                calculado = significativos * multiplicador
+
+                erro = abs(calculado - valor_original)
+
+                if melhor is None or erro < melhor[0]:
+                    melhor = (
+                        erro,
+                        cor1,
+                        cor2,
+                        cor3,
+                        calculado
+                    )
+
+                # Correspondência exata.
+                if abs(calculado - valor_original) < 1e-9:
+                    return cor1, cor2, cor3
+
+    # Permite pequena aproximação para valores que não possuem
+    # representação exata com apenas duas casas significativas.
+    if melhor is not None:
+
+        erro, cor1, cor2, cor3, calculado = melhor
+
+        # Aceita aproximação de até 1%.
+        if erro / valor_original <= 0.01:
+            return cor1, cor2, cor3
+
+    raise ValueError(
+        f"O valor {valor_original:g} Ω não pode ser representado "
+        "adequadamente usando 3 faixas."
+    )
+
+
+def extrair_tolerancia(texto):
+    """
+    Extrai o nome da cor da tolerância.
+
+    Exemplo:
+        'Dourado (±5%)' -> 'Dourado'
+    """
+
+    if not texto:
+        return None
+
+    return texto.split(" ")[0]
+
+
+def formatar_tolerancia(percentual):
+    """
+    Formata a tolerância usando vírgula como separador decimal.
+    """
+
+    if float(percentual).is_integer():
+        return f"{int(percentual)}%"
+
+    return f"{percentual:g}".replace(".", ",") + "%"
+
+
+# ============================================================
 # INTERFACE GRÁFICA
+# ============================================================
+
 class AplicacaoResistor:
 
     def __init__(self, root):
+
         self.root = root
 
         self.root.title("Calculadora de Resistores")
@@ -133,14 +227,18 @@ class AplicacaoResistor:
 
         self.atualizar_modo()
 
-# ESTILO
-def criar_estilo(self):
-    style = ttk.Style()
+    # ========================================================
+    # ESTILO
+    # ========================================================
 
-    try:
-        style.theme_use("clam")
-    except tk.TclError:
-        pass
+    def criar_estilo(self):
+
+        style = ttk.Style()
+
+        try:
+            style.theme_use("clam")
+        except tk.TclError:
+            pass
 
         style.configure(
             "TCombobox",
@@ -149,19 +247,24 @@ def criar_estilo(self):
             foreground="black",
             padding=5
         )
+
         style.configure(
             "TButton",
             font=("Arial", 11, "bold"),
             padding=8
         )
+
         style.configure(
             "TRadiobutton",
-            background="#20242a",
+            background="#2b3038",
             foreground="white",
             font=("Arial", 11)
         )
 
-# INTERFACE
+    # ========================================================
+    # INTERFACE
+    # ========================================================
+
     def criar_interface(self):
 
         titulo = tk.Label(
@@ -184,7 +287,10 @@ def criar_estilo(self):
 
         subtitulo.pack(pady=(0, 15))
 
-# ESCOLHA DO MODO
+        # ----------------------------------------------------
+        # ESCOLHA DO MODO
+        # ----------------------------------------------------
+
         frame_modo = tk.Frame(
             self.root,
             bg="#2b3038",
@@ -192,7 +298,10 @@ def criar_estilo(self):
             pady=10
         )
 
-        frame_modo.pack(fill="x", padx=30)
+        frame_modo.pack(
+            fill="x",
+            padx=30
+        )
 
         tk.Label(
             frame_modo,
@@ -200,7 +309,10 @@ def criar_estilo(self):
             bg="#2b3038",
             fg="white",
             font=("Arial", 11, "bold")
-        ).pack(side="left", padx=10)
+        ).pack(
+            side="left",
+            padx=10
+        )
 
         ttk.Radiobutton(
             frame_modo,
@@ -208,7 +320,10 @@ def criar_estilo(self):
             variable=self.modo,
             value="cores",
             command=self.atualizar_modo
-        ).pack(side="left", padx=15)
+        ).pack(
+            side="left",
+            padx=15
+        )
 
         ttk.Radiobutton(
             frame_modo,
@@ -216,15 +331,20 @@ def criar_estilo(self):
             variable=self.modo,
             value="valor",
             command=self.atualizar_modo
-        ).pack(side="left", padx=15)
+        ).pack(
+            side="left",
+            padx=15
+        )
 
-# ÁREA PRINCIPAL
-
+        # ----------------------------------------------------
+        # ÁREA PRINCIPAL
+        # ----------------------------------------------------
 
         self.frame_principal = tk.Frame(
             self.root,
             bg="#20242a"
         )
+
         self.frame_principal.pack(
             fill="both",
             expand=True,
@@ -233,11 +353,13 @@ def criar_estilo(self):
         )
 
         # Painel esquerdo
+
         self.frame_controles = tk.Frame(
             self.frame_principal,
             bg="#2b3038",
             width=370
         )
+
         self.frame_controles.pack(
             side="left",
             fill="y",
@@ -245,10 +367,12 @@ def criar_estilo(self):
         )
 
         # Painel direito
+
         self.frame_visual = tk.Frame(
             self.frame_principal,
             bg="#2b3038"
         )
+
         self.frame_visual.pack(
             side="left",
             fill="both",
@@ -258,9 +382,9 @@ def criar_estilo(self):
         self.criar_controles()
         self.criar_resistor()
 
-    # --------------------------------------------------------
+    # ========================================================
     # CONTROLES
-    # --------------------------------------------------------
+    # ========================================================
 
     def criar_controles(self):
 
@@ -270,9 +394,10 @@ def criar_estilo(self):
             font=("Arial", 15, "bold"),
             bg="#2b3038",
             fg="#00d9ff"
-        ).pack(pady=(20, 15))
+        ).pack(
+            pady=(20, 15)
+        )
 
-        # Frame que será alterado conforme o modo
         self.frame_cores = tk.Frame(
             self.frame_controles,
             bg="#2b3038"
@@ -301,7 +426,12 @@ def criar_estilo(self):
                 self.frame_cores,
                 bg="#2b3038"
             )
-            linha.pack(fill="x", pady=7, padx=20)
+
+            linha.pack(
+                fill="x",
+                pady=7,
+                padx=20
+            )
 
             tk.Label(
                 linha,
@@ -311,11 +441,15 @@ def criar_estilo(self):
                 bg="#2b3038",
                 fg="white",
                 font=("Arial", 10)
-            ).pack(side="left")
+            ).pack(
+                side="left"
+            )
 
             combo = ttk.Combobox(
                 linha,
-                values=list(DIGITOS.keys()),
+                values=list(DIGITOS.keys())
+                if nome != "3ª faixa"
+                else list(MULTIPLICADORES.keys()),
                 state="readonly",
                 width=15
             )
@@ -329,12 +463,20 @@ def criar_estilo(self):
 
             self.combos_cores.append(combo)
 
-        # Tolerância
+        # ----------------------------------------------------
+        # TOLERÂNCIA
+        # ----------------------------------------------------
+
         linha_tol = tk.Frame(
             self.frame_cores,
             bg="#2b3038"
         )
-        linha_tol.pack(fill="x", pady=7, padx=20)
+
+        linha_tol.pack(
+            fill="x",
+            pady=7,
+            padx=20
+        )
 
         tk.Label(
             linha_tol,
@@ -344,20 +486,24 @@ def criar_estilo(self):
             bg="#2b3038",
             fg="white",
             font=("Arial", 10)
-        ).pack(side="left")
+        ).pack(
+            side="left"
+        )
+
+        valores_tolerancia = [
+            "Marrom (±1%)",
+            "Vermelho (±2%)",
+            "Verde (±0,5%)",
+            "Azul (±0,25%)",
+            "Violeta (±0,1%)",
+            "Cinza (±0,05%)",
+            "Dourado (±5%)",
+            "Prata (±10%)"
+        ]
 
         self.combo_tolerancia = ttk.Combobox(
             linha_tol,
-            values=[
-                "Marrom (±1%)",
-                "Vermelho (±2%)",
-                "Verde (±0,5%)",
-                "Azul (±0,25%)",
-                "Violeta (±0,1%)",
-                "Cinza (±0,05%)",
-                "Dourado (±5%)",
-                "Prata (±10%)"
-            ],
+            values=valores_tolerancia,
             state="readonly",
             width=15
         )
@@ -377,6 +523,7 @@ def criar_estilo(self):
             self.frame_valor,
             bg="#2b3038"
         )
+
         linha_valor.pack(
             fill="x",
             padx=20,
@@ -389,7 +536,9 @@ def criar_estilo(self):
             bg="#2b3038",
             fg="white",
             font=("Arial", 10)
-        ).pack(anchor="w")
+        ).pack(
+            anchor="w"
+        )
 
         self.entrada_valor = tk.Entry(
             linha_valor,
@@ -397,6 +546,7 @@ def criar_estilo(self):
             bg="white",
             fg="black"
         )
+
         self.entrada_valor.pack(
             fill="x",
             pady=5
@@ -408,12 +558,19 @@ def criar_estilo(self):
             bg="#2b3038",
             fg="#aaaaaa",
             font=("Arial", 9)
-        ).pack(anchor="w")
+        ).pack(
+            anchor="w"
+        )
+
+        # ----------------------------------------------------
+        # TOLERÂNCIA DO MODO VALOR
+        # ----------------------------------------------------
 
         linha_tol2 = tk.Frame(
             self.frame_valor,
             bg="#2b3038"
         )
+
         linha_tol2.pack(
             fill="x",
             padx=20,
@@ -426,20 +583,13 @@ def criar_estilo(self):
             bg="#2b3038",
             fg="white",
             font=("Arial", 10)
-        ).pack(anchor="w")
+        ).pack(
+            anchor="w"
+        )
 
         self.combo_tolerancia_valor = ttk.Combobox(
             linha_tol2,
-            values=[
-                "Marrom (±1%)",
-                "Vermelho (±2%)",
-                "Verde (±0,5%)",
-                "Azul (±0,25%)",
-                "Violeta (±0,1%)",
-                "Cinza (±0,05%)",
-                "Dourado (±5%)",
-                "Prata (±10%)"
-            ],
+            values=valores_tolerancia,
             state="readonly",
             width=25
         )
@@ -449,15 +599,35 @@ def criar_estilo(self):
             pady=5
         )
 
-        # Botão
+        # ----------------------------------------------------
+        # BOTÃO CALCULAR
+        # ----------------------------------------------------
+
         self.botao_calcular = ttk.Button(
             self.frame_valor,
             text="CALCULAR CORES",
             command=self.processar_valor
         )
+
         self.botao_calcular.pack(
             padx=20,
             pady=15,
+            fill="x"
+        )
+
+        # ----------------------------------------------------
+        # BOTÃO LIMPAR
+        # ----------------------------------------------------
+
+        self.botao_limpar = ttk.Button(
+            self.frame_valor,
+            text="LIMPAR",
+            command=self.limpar
+        )
+
+        self.botao_limpar.pack(
+            padx=20,
+            pady=(0, 10),
             fill="x"
         )
 
@@ -472,7 +642,10 @@ def criar_estilo(self):
             bg="#2b3038",
             fg="#00d9ff"
         )
-        self.label_resultado_titulo.pack(pady=(25, 5))
+
+        self.label_resultado_titulo.pack(
+            pady=(25, 5)
+        )
 
         self.label_resultado = tk.Label(
             self.frame_controles,
@@ -482,14 +655,15 @@ def criar_estilo(self):
             fg="#00ff88",
             wraplength=320
         )
+
         self.label_resultado.pack(
             padx=20,
             pady=10
         )
 
-    # --------------------------------------------------------
+    # ========================================================
     # DESENHO DO RESISTOR
-    # --------------------------------------------------------
+    # ========================================================
 
     def criar_resistor(self):
 
@@ -499,7 +673,9 @@ def criar_estilo(self):
             font=("Arial", 15, "bold"),
             bg="#2b3038",
             fg="#00d9ff"
-        ).pack(pady=(20, 5))
+        ).pack(
+            pady=(20, 5)
+        )
 
         self.canvas = tk.Canvas(
             self.frame_visual,
@@ -508,6 +684,7 @@ def criar_estilo(self):
             bg="#2b3038",
             highlightthickness=0
         )
+
         self.canvas.pack()
 
         self.desenhar_resistor(
@@ -518,7 +695,10 @@ def criar_estilo(self):
 
         self.canvas.delete("all")
 
-        # Fios
+        # ----------------------------------------------------
+        # FIOS
+        # ----------------------------------------------------
+
         self.canvas.create_line(
             30, 150,
             100, 150,
@@ -533,7 +713,10 @@ def criar_estilo(self):
             width=6
         )
 
-        # Corpo
+        # ----------------------------------------------------
+        # CORPO
+        # ----------------------------------------------------
+
         self.canvas.create_polygon(
             90, 115,
             110, 100,
@@ -548,15 +731,18 @@ def criar_estilo(self):
             width=2
         )
 
-        # Faixas
+        # ----------------------------------------------------
+        # FAIXAS
+        # ----------------------------------------------------
+
         posicoes = [125, 165, 205, 265]
 
         for i, cor in enumerate(cores):
 
-            if cor not in CORES:
-                cor_hex = "#000000"
-            else:
-                cor_hex = CORES[cor]
+            cor_hex = CORES.get(
+                cor,
+                "#000000"
+            )
 
             self.canvas.create_rectangle(
                 posicoes[i],
@@ -568,8 +754,10 @@ def criar_estilo(self):
                 width=1
             )
 
-            # Borda branca para o branco ficar visível
-            if cor == "Branco":
+            # Borda para cores claras
+
+            if cor in ("Branco", "Amarelo", "Dourado", "Prata"):
+
                 self.canvas.create_rectangle(
                     posicoes[i],
                     100,
@@ -578,31 +766,34 @@ def criar_estilo(self):
                     outline="#555555"
                 )
 
-        # Texto
+        # ----------------------------------------------------
+        # LEGENDA
+        # ----------------------------------------------------
+
         self.canvas.create_text(
             205,
             245,
-            text="1ª   2ª   3ª   T",
+            text="1ª     2ª     3ª     T",
             fill="white",
             font=("Arial", 11, "bold")
         )
 
-    # --------------------------------------------------------
+    # ========================================================
     # MUDANÇA DE MODO
-    # --------------------------------------------------------
+    # ========================================================
 
     def atualizar_modo(self):
 
         if self.modo.get() == "cores":
 
             self.frame_valor.pack_forget()
-            self.frame_cores.pack(fill="x")
 
-            self.label_resultado.config(
-                text="Selecione as 4 faixas"
+            self.frame_cores.pack(
+                fill="x"
             )
 
             # Valores iniciais
+
             if not self.combos_cores[0].get():
                 self.combos_cores[0].set("Marrom")
 
@@ -613,14 +804,19 @@ def criar_estilo(self):
                 self.combos_cores[2].set("Vermelho")
 
             if not self.combo_tolerancia.get():
-                self.combo_tolerancia.set("Dourado (±5%)")
+                self.combo_tolerancia.set(
+                    "Dourado (±5%)"
+                )
 
             self.processar_cores()
 
         else:
 
             self.frame_cores.pack_forget()
-            self.frame_valor.pack(fill="x")
+
+            self.frame_valor.pack(
+                fill="x"
+            )
 
             self.label_resultado.config(
                 text="Informe o valor"
@@ -630,9 +826,9 @@ def criar_estilo(self):
                 ["Cinza", "Cinza", "Cinza", "Dourado"]
             )
 
-    # --------------------------------------------------------
-    # CORES -> VALOR
-    # --------------------------------------------------------
+    # ========================================================
+    # CORES → VALOR
+    # ========================================================
 
     def processar_cores(self):
 
@@ -640,28 +836,46 @@ def criar_estilo(self):
             return
 
         try:
+
             cor1 = self.combos_cores[0].get()
             cor2 = self.combos_cores[1].get()
             cor3 = self.combos_cores[2].get()
-            tolerancia = self.combo_tolerancia.get()
 
-            if not cor1 or not cor2 or not cor3 or not tolerancia:
+            tolerancia_texto = self.combo_tolerancia.get()
+
+            if not cor1 or not cor2 or not cor3:
                 return
 
-            # Para o cálculo das três primeiras faixas:
-            # as duas primeiras são dígitos e a terceira é
-            # o multiplicador.
-            base = DIGITOS[cor1] * 10 + DIGITOS[cor2]
-            multiplicador = MULTIPLICADORES[cor3]
+            if not tolerancia_texto:
+                return
 
-            valor = base * multiplicador
+            valor = calcular_valor_por_cores(
+                cor1,
+                cor2,
+                cor3
+            )
 
-            nome_tol = tolerancia.split(" ")[0]
+            nome_tol = extrair_tolerancia(
+                tolerancia_texto
+            )
+
             percentual = TOLERANCIAS[nome_tol]
+
+            valor_minimo = valor * (
+                1 - percentual / 100
+            )
+
+            valor_maximo = valor * (
+                1 + percentual / 100
+            )
 
             resultado = (
                 f"{formatar_resistencia(valor)}\n"
-                f"±{str(percentual).replace('.', ',')}%"
+                f"±{formatar_tolerancia(percentual)}\n\n"
+                f"Faixa: "
+                f"{formatar_resistencia(valor_minimo)} "
+                f"até "
+                f"{formatar_resistencia(valor_maximo)}"
             )
 
             self.label_resultado.config(
@@ -672,15 +886,15 @@ def criar_estilo(self):
                 [cor1, cor2, cor3, nome_tol]
             )
 
-        except (KeyError, ValueError):
-            messagebox.showerror(
-                "Erro",
-                "Verifique as cores selecionadas."
+        except (KeyError, ValueError) as erro:
+
+            self.label_resultado.config(
+                text="Combinação inválida"
             )
 
-    # --------------------------------------------------------
-    # VALOR -> CORES
-    # --------------------------------------------------------
+    # ========================================================
+    # VALOR → CORES
+    # ========================================================
 
     def processar_valor(self):
 
@@ -688,47 +902,127 @@ def criar_estilo(self):
             return
 
         try:
+
             texto = self.entrada_valor.get().strip()
 
             if not texto:
-                raise ValueError
+                raise ValueError(
+                    "Digite um valor."
+                )
 
-            # Aceita vírgula como separador decimal.
+            # Aceita vírgula decimal.
+
             texto = texto.replace(",", ".")
 
+            # ------------------------------------------------
+            # Aceita k e M
+            #
+            # Exemplos:
+            # 4.7k
+            # 1k
+            # 2.2M
+            # ------------------------------------------------
+
+            multiplicador_unidade = 1
+
+            texto_lower = texto.lower()
+
+            if texto_lower.endswith("k"):
+
+                multiplicador_unidade = 1_000
+                texto = texto[:-1]
+
+            elif texto_lower.endswith("m"):
+
+                multiplicador_unidade = 1_000_000
+                texto = texto[:-1]
+
             valor = float(texto)
+
+            valor *= multiplicador_unidade
 
             if valor <= 0:
                 raise ValueError
 
-            cor1, cor2, cor3 = resistencia_para_cores(valor)
+            cor1, cor2, cor3 = resistencia_para_cores(
+                valor
+            )
 
-            tolerancia_texto = self.combo_tolerancia_valor.get()
+            tolerancia_texto = (
+                self.combo_tolerancia_valor.get()
+            )
 
             if not tolerancia_texto:
-                tolerancia_texto = "Dourado (±5%)"
-                self.combo_tolerancia_valor.set(tolerancia_texto)
 
-            cor_tolerancia = tolerancia_texto.split(" ")[0]
+                tolerancia_texto = "Dourado (±5%)"
+
+                self.combo_tolerancia_valor.set(
+                    tolerancia_texto
+                )
+
+            cor_tolerancia = extrair_tolerancia(
+                tolerancia_texto
+            )
+
+            percentual = TOLERANCIAS[
+                cor_tolerancia
+            ]
+
+            resultado = (
+                f"{formatar_resistencia(valor)}\n\n"
+                f"{cor1} - {cor2} - {cor3}\n"
+                f"Tolerância: "
+                f"±{formatar_tolerancia(percentual)}"
+            )
 
             self.label_resultado.config(
-                text=(
-                    f"{formatar_resistencia(valor)}\n\n"
-                    f"{cor1} - {cor2} - {cor3} - "
-                    f"{cor_tolerancia}"
-                )
+                text=resultado
             )
 
             self.desenhar_resistor(
-                [cor1, cor2, cor3, cor_tolerancia]
+                [
+                    cor1,
+                    cor2,
+                    cor3,
+                    cor_tolerancia
+                ]
             )
 
-        except ValueError:
+        except (ValueError, OverflowError):
+
             messagebox.showerror(
                 "Valor inválido",
                 "Digite um valor de resistência válido.\n\n"
-                "Exemplos: 330, 1000, 4700, 100000."
+                "Exemplos:\n"
+                "330\n"
+                "1000\n"
+                "4700\n"
+                "4,7k\n"
+                "1M"
             )
+
+    # ========================================================
+    # LIMPAR
+    # ========================================================
+
+    def limpar(self):
+
+        self.entrada_valor.delete(
+            0,
+            tk.END
+        )
+
+        self.combo_tolerancia_valor.set(
+            "Dourado (±5%)"
+        )
+
+        self.label_resultado.config(
+            text="Informe o valor"
+        )
+
+        self.desenhar_resistor(
+            ["Cinza", "Cinza", "Cinza", "Dourado"]
+        )
 
 
 # ============================================================
