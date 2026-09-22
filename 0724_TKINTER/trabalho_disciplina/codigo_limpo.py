@@ -829,13 +829,10 @@ class AplicacaoResistor:
                 "4,7k\n"
                 "1M"
             )
-
-   
+  
     # LIMPAR
-    # ========================================================
-
+    
     def limpar(self):
-
         self.entrada_valor.delete(
             0,
             tk.END
@@ -853,15 +850,11 @@ class AplicacaoResistor:
             ["Cinza", "Cinza", "Cinza", "Dourado"]
         )
 
-
-# ============================================================
 # PROGRAMA PRINCIPAL
-# ============================================================
 
 if __name__ == "__main__":
 
     root = tk.Tk()
-
     app = AplicacaoResistor(root)
 
     root.mainloop()
