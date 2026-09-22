@@ -742,17 +742,14 @@ class AplicacaoResistor:
             self.label_resultado.config(
                 text="Combinação inválida"
             )
-
-    
+   
     # VALOR → CORES
 
     def processar_valor(self):
-
         if self.modo.get() != "valor":
             return
 
         try:
-
             texto = self.entrada_valor.get().strip()
 
             if not texto:
@@ -760,30 +757,18 @@ class AplicacaoResistor:
                     "Digite um valor."
                 )
 
-            # Aceita vírgula decimal.
+            # ACEITAÇÃO DE VÍRGULA DECIMAL
 
             texto = texto.replace(",", ".")
-
-            # ------------------------------------------------
-            # Aceita k e M
-            #
-            # Exemplos:
-            # 4.7k
-            # 1k
-            # 2.2M
-            # ------------------------------------------------
 
             multiplicador_unidade = 1
 
             texto_lower = texto.lower()
 
             if texto_lower.endswith("k"):
-
                 multiplicador_unidade = 1_000
                 texto = texto[:-1]
-
             elif texto_lower.endswith("m"):
-
                 multiplicador_unidade = 1_000_000
                 texto = texto[:-1]
 
@@ -793,23 +778,18 @@ class AplicacaoResistor:
 
             if valor <= 0:
                 raise ValueError
-
             cor1, cor2, cor3 = resistencia_para_cores(
                 valor
             )
-
             tolerancia_texto = (
                 self.combo_tolerancia_valor.get()
             )
-
             if not tolerancia_texto:
-
                 tolerancia_texto = "Dourado (±5%)"
 
                 self.combo_tolerancia_valor.set(
                     tolerancia_texto
                 )
-
             cor_tolerancia = extrair_tolerancia(
                 tolerancia_texto
             )
@@ -839,7 +819,6 @@ class AplicacaoResistor:
             )
 
         except (ValueError, OverflowError):
-
             messagebox.showerror(
                 "Valor inválido",
                 "Digite um valor de resistência válido.\n\n"
@@ -851,7 +830,7 @@ class AplicacaoResistor:
                 "1M"
             )
 
-    # ========================================================
+   
     # LIMPAR
     # ========================================================
 
