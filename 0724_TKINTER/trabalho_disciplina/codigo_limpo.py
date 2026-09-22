@@ -633,11 +633,9 @@ class AplicacaoResistor:
                     200,
                     outline="#555555"
                 )
-
-        
+       
         # LEGENDA
-        # ----------------------------------------------------
-
+        
         self.canvas.create_text(
             205,
             245,
@@ -645,29 +643,23 @@ class AplicacaoResistor:
             fill="white",
             font=("Arial", 11, "bold")
         )
-
-    # ========================================================
+   
     # MUDANÇA DE MODO
-    # ========================================================
 
     def atualizar_modo(self):
-
         if self.modo.get() == "cores":
-
             self.frame_valor.pack_forget()
 
             self.frame_cores.pack(
                 fill="x"
             )
 
-            # Valores iniciais
+            # VALORES INICIAIS
 
             if not self.combos_cores[0].get():
                 self.combos_cores[0].set("Marrom")
-
             if not self.combos_cores[1].get():
                 self.combos_cores[1].set("Preto")
-
             if not self.combos_cores[2].get():
                 self.combos_cores[2].set("Vermelho")
 
@@ -679,7 +671,6 @@ class AplicacaoResistor:
             self.processar_cores()
 
         else:
-
             self.frame_cores.pack_forget()
 
             self.frame_valor.pack(
@@ -693,18 +684,14 @@ class AplicacaoResistor:
             self.desenhar_resistor(
                 ["Cinza", "Cinza", "Cinza", "Dourado"]
             )
-
-    # ========================================================
+    
     # CORES → VALOR
-    # ========================================================
 
     def processar_cores(self):
-
         if self.modo.get() != "cores":
             return
 
         try:
-
             cor1 = self.combos_cores[0].get()
             cor2 = self.combos_cores[1].get()
             cor3 = self.combos_cores[2].get()
@@ -713,7 +700,6 @@ class AplicacaoResistor:
 
             if not cor1 or not cor2 or not cor3:
                 return
-
             if not tolerancia_texto:
                 return
 
@@ -722,7 +708,6 @@ class AplicacaoResistor:
                 cor2,
                 cor3
             )
-
             nome_tol = extrair_tolerancia(
                 tolerancia_texto
             )
@@ -732,7 +717,6 @@ class AplicacaoResistor:
             valor_minimo = valor * (
                 1 - percentual / 100
             )
-
             valor_maximo = valor * (
                 1 + percentual / 100
             )
@@ -755,14 +739,12 @@ class AplicacaoResistor:
             )
 
         except (KeyError, ValueError) as erro:
-
             self.label_resultado.config(
                 text="Combinação inválida"
             )
 
-    # ========================================================
+    
     # VALOR → CORES
-    # ========================================================
 
     def processar_valor(self):
 
