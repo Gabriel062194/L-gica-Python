@@ -287,13 +287,10 @@ class AplicacaoResistor:
 
         self.criar_controles()
         self.criar_resistor()
-
-   
+  
     # CONTROLES
-    # ========================================================
-
+    
     def criar_controles(self):
-
         tk.Label(
             self.frame_controles,
             text="ENTRADA",
@@ -303,21 +300,17 @@ class AplicacaoResistor:
         ).pack(
             pady=(20, 15)
         )
-
         self.frame_cores = tk.Frame(
             self.frame_controles,
             bg="#2b3038"
         )
-
         self.frame_valor = tk.Frame(
             self.frame_controles,
             bg="#2b3038"
         )
-
-        # ----------------------------------------------------
-        # MODO CORES
-        # ----------------------------------------------------
-
+        
+        # MODO DAS CORES
+        
         self.combos_cores = []
 
         nomes = [
@@ -327,7 +320,6 @@ class AplicacaoResistor:
         ]
 
         for nome in nomes:
-
             linha = tk.Frame(
                 self.frame_cores,
                 bg="#2b3038"
@@ -350,7 +342,6 @@ class AplicacaoResistor:
             ).pack(
                 side="left"
             )
-
             combo = ttk.Combobox(
                 linha,
                 values=list(DIGITOS.keys())
