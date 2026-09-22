@@ -115,81 +115,48 @@ def resistencia_para_cores(valor): # Conversão de resistência para 3 faixas.
                         calculado
                     )
 
-                # Correspondência exata.
+                # EXATA CORRESPONDÊNCIA
                 if abs(calculado - valor_original) < 1e-9:
                     return cor1, cor2, cor3
 
-    # Permite pequena aproximação para valores que não possuem
-    # representação exata com apenas duas casas significativas.
+    # Pequena aproximação permitida a fim de valorizar quantidades que não possuem exatidão nas duas casas significativas.
     if melhor is not None:
-
         erro, cor1, cor2, cor3, calculado = melhor
 
-        # Aceita aproximação de até 1%.
+        # APROXIMAÇÃO DE ATÉ 1%
         if erro / valor_original <= 0.01:
             return cor1, cor2, cor3
+    raise ValueError(f"O valor {valor_original:g} Ω não pode ser representado adequadamente usando 3 faixas.")
 
-    raise ValueError(
-        f"O valor {valor_original:g} Ω não pode ser representado "
-        "adequadamente usando 3 faixas."
-    )
-
-
-def extrair_tolerancia(texto):
-    """
-    Extrai o nome da cor da tolerância.
-
-    Exemplo:
-        'Dourado (±5%)' -> 'Dourado'
-    """
-
+def extrair_tolerancia(texto): # Extração do nome da cor tolerante.
     if not texto:
         return None
-
     return texto.split(" ")[0]
 
-
-def formatar_tolerancia(percentual):
-    """
-    Formata a tolerância usando vírgula como separador decimal.
-    """
-
+def formatar_tolerancia(percentual): # Formatação da tolerância usando a vírgula.
     if float(percentual).is_integer():
         return f"{int(percentual)}%"
-
     return f"{percentual:g}".replace(".", ",") + "%"
 
-
-# ============================================================
 # INTERFACE GRÁFICA
-# ============================================================
 
 class AplicacaoResistor:
-
     def __init__(self, root):
-
         self.root = root
-
         self.root.title("Calculadora de Resistores")
         self.root.geometry("850x650")
         self.root.resizable(False, False)
         self.root.configure(bg="#20242a")
-
         self.modo = tk.StringVar(value="cores")
 
         self.criar_estilo()
         self.criar_interface()
-
         self.atualizar_modo()
 
-    # ========================================================
     # ESTILO
-    # ========================================================
 
     def criar_estilo(self):
-
         style = ttk.Style()
-
         try:
             style.theme_use("clam")
         except tk.TclError:
@@ -202,26 +169,21 @@ class AplicacaoResistor:
             foreground="black",
             padding=5
         )
-
         style.configure(
             "TButton",
             font=("Arial", 11, "bold"),
             padding=8
         )
-
         style.configure(
             "TRadiobutton",
             background="#2b3038",
             foreground="white",
             font=("Arial", 11)
         )
-
-    # ========================================================
+    
     # INTERFACE
-    # ========================================================
-
+    
     def criar_interface(self):
-
         titulo = tk.Label(
             self.root,
             text="CALCULADORA DE RESISTORES",
@@ -242,22 +204,18 @@ class AplicacaoResistor:
 
         subtitulo.pack(pady=(0, 15))
 
-        # ----------------------------------------------------
-        # ESCOLHA DO MODO
-        # ----------------------------------------------------
-
+# MODO DE ESCOLHA
+        
         frame_modo = tk.Frame(
             self.root,
             bg="#2b3038",
             padx=15,
             pady=10
         )
-
         frame_modo.pack(
             fill="x",
             padx=30
         )
-
         tk.Label(
             frame_modo,
             text="Modo de operação:",
@@ -268,7 +226,6 @@ class AplicacaoResistor:
             side="left",
             padx=10
         )
-
         ttk.Radiobutton(
             frame_modo,
             text="Cores → Valor",
@@ -279,7 +236,6 @@ class AplicacaoResistor:
             side="left",
             padx=15
         )
-
         ttk.Radiobutton(
             frame_modo,
             text="Valor → Cores",
@@ -290,16 +246,13 @@ class AplicacaoResistor:
             side="left",
             padx=15
         )
-
-        # ----------------------------------------------------
+       
         # ÁREA PRINCIPAL
-        # ----------------------------------------------------
 
         self.frame_principal = tk.Frame(
             self.root,
             bg="#20242a"
         )
-
         self.frame_principal.pack(
             fill="both",
             expand=True,
@@ -307,27 +260,25 @@ class AplicacaoResistor:
             pady=15
         )
 
-        # Painel esquerdo
+        # PAINEL DO LADO ESQUERDO
 
         self.frame_controles = tk.Frame(
             self.frame_principal,
             bg="#2b3038",
             width=370
         )
-
         self.frame_controles.pack(
             side="left",
             fill="y",
             padx=(0, 15)
         )
 
-        # Painel direito
+        # PAINEL DO LADO DIREITO
 
         self.frame_visual = tk.Frame(
             self.frame_principal,
             bg="#2b3038"
         )
-
         self.frame_visual.pack(
             side="left",
             fill="both",
@@ -337,7 +288,7 @@ class AplicacaoResistor:
         self.criar_controles()
         self.criar_resistor()
 
-    # ========================================================
+   
     # CONTROLES
     # ========================================================
 
