@@ -359,11 +359,9 @@ class AplicacaoResistor:
             )
 
             self.combos_cores.append(combo)
-
-        # ----------------------------------------------------
+       
         # TOLERÂNCIA
-        # ----------------------------------------------------
-
+        
         linha_tol = tk.Frame(
             self.frame_cores,
             bg="#2b3038"
@@ -386,7 +384,6 @@ class AplicacaoResistor:
         ).pack(
             side="left"
         )
-
         valores_tolerancia = [
             "Marrom (±1%)",
             "Vermelho (±2%)",
@@ -411,11 +408,9 @@ class AplicacaoResistor:
             "<<ComboboxSelected>>",
             lambda event: self.processar_cores()
         )
-
-        # ----------------------------------------------------
-        # MODO VALOR
-        # ----------------------------------------------------
-
+       
+        # MODO DO VALOR
+        
         linha_valor = tk.Frame(
             self.frame_valor,
             bg="#2b3038"
@@ -436,7 +431,6 @@ class AplicacaoResistor:
         ).pack(
             anchor="w"
         )
-
         self.entrada_valor = tk.Entry(
             linha_valor,
             font=("Arial", 12),
@@ -458,11 +452,9 @@ class AplicacaoResistor:
         ).pack(
             anchor="w"
         )
-
-        # ----------------------------------------------------
+      
         # TOLERÂNCIA DO MODO VALOR
-        # ----------------------------------------------------
-
+        
         linha_tol2 = tk.Frame(
             self.frame_valor,
             bg="#2b3038"
@@ -483,7 +475,6 @@ class AplicacaoResistor:
         ).pack(
             anchor="w"
         )
-
         self.combo_tolerancia_valor = ttk.Combobox(
             linha_tol2,
             values=valores_tolerancia,
@@ -495,10 +486,8 @@ class AplicacaoResistor:
             fill="x",
             pady=5
         )
-
-        # ----------------------------------------------------
-        # BOTÃO CALCULAR
-        # ----------------------------------------------------
+       
+        # BOTÃO PARA CALCULAR
 
         self.botao_calcular = ttk.Button(
             self.frame_valor,
@@ -511,10 +500,8 @@ class AplicacaoResistor:
             pady=15,
             fill="x"
         )
-
-        # ----------------------------------------------------
-        # BOTÃO LIMPAR
-        # ----------------------------------------------------
+       
+        # BOTÃO PARA LIMPAR
 
         self.botao_limpar = ttk.Button(
             self.frame_valor,
@@ -527,11 +514,9 @@ class AplicacaoResistor:
             pady=(0, 10),
             fill="x"
         )
-
-        # ----------------------------------------------------
+        
         # RESULTADO
-        # ----------------------------------------------------
-
+        
         self.label_resultado_titulo = tk.Label(
             self.frame_controles,
             text="RESULTADO",
@@ -557,13 +542,10 @@ class AplicacaoResistor:
             padx=20,
             pady=10
         )
-
-    # ========================================================
+    
     # DESENHO DO RESISTOR
-    # ========================================================
 
     def criar_resistor(self):
-
         tk.Label(
             self.frame_visual,
             text="VISUALIZAÇÃO",
@@ -573,7 +555,6 @@ class AplicacaoResistor:
         ).pack(
             pady=(20, 5)
         )
-
         self.canvas = tk.Canvas(
             self.frame_visual,
             width=410,
@@ -589,12 +570,9 @@ class AplicacaoResistor:
         )
 
     def desenhar_resistor(self, cores):
-
         self.canvas.delete("all")
-
-        # ----------------------------------------------------
-        # FIOS
-        # ----------------------------------------------------
+        
+        # FIOS DO RESISTOR
 
         self.canvas.create_line(
             30, 150,
@@ -602,17 +580,14 @@ class AplicacaoResistor:
             fill="#bfc4c8",
             width=6
         )
-
         self.canvas.create_line(
             310, 150,
             380, 150,
             fill="#bfc4c8",
             width=6
         )
-
-        # ----------------------------------------------------
-        # CORPO
-        # ----------------------------------------------------
+        
+        # CORPO DO RESISTOR
 
         self.canvas.create_polygon(
             90, 115,
@@ -627,15 +602,12 @@ class AplicacaoResistor:
             outline="#8c7352",
             width=2
         )
-
-        # ----------------------------------------------------
-        # FAIXAS
-        # ----------------------------------------------------
+        
+        # FAIXAS DO RESISTOR
 
         posicoes = [125, 165, 205, 265]
 
         for i, cor in enumerate(cores):
-
             cor_hex = CORES.get(
                 cor,
                 "#000000"
@@ -651,10 +623,9 @@ class AplicacaoResistor:
                 width=1
             )
 
-            # Borda para cores claras
+            # CORES CLARAS PARA A BORDA
 
             if cor in ("Branco", "Amarelo", "Dourado", "Prata"):
-
                 self.canvas.create_rectangle(
                     posicoes[i],
                     100,
@@ -663,7 +634,7 @@ class AplicacaoResistor:
                     outline="#555555"
                 )
 
-        # ----------------------------------------------------
+        
         # LEGENDA
         # ----------------------------------------------------
 

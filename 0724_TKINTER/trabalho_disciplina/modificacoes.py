@@ -18,7 +18,6 @@ CORES = {
     "Prata": "#C0C0C0"
 }
 
-
 DIGITOS = {
     "Preto": 0,
     "Marrom": 1,
