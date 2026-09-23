@@ -15,28 +15,11 @@ def carregar_saldo(conta): # O saldo da conta é buscado no arquivo.
                     return float(dados[1])
 
     # Conta inativa
+    
     return 1000.00
 
 def salvar_saldo(conta, saldo): # Salva/atualiza no arquivo o saldo da conta.
 
-    contas = {}
-
-    if os.path.exists(ARQUIVO_SALDO):
-        with open(ARQUIVO_SALDO, "r", encoding="utf-8"
-
-
-
-
-
-
-
-
-    
-
-
-
-def salvar_saldo(conta, saldo):
-    """Salva ou atualiza o saldo da conta no arquivo."""
     contas = {}
 
     if os.path.exists(ARQUIVO_SALDO):
@@ -53,14 +36,12 @@ def salvar_saldo(conta, saldo):
         for numero_conta, valor in contas.items():
             arquivo.write(f"{numero_conta};{valor}\n")
 
-
-def eh_valor_inteiro(valor):
-    """Verifica se o valor informado é inteiro."""
+def consta_valor_inteiro(valor): # Análise para saber se o valor informado é inteiro ou não.
+    
     return valor.is_integer()
 
-
-def calcular_cedulas(valor):
-    """Calcula a quantidade de cada cédula para o saque."""
+def calcular_cedulas(valor): # Cálculo da quantidade de cédulas para o saque do cliente.
+    
     quantidade_cedulas = {}
 
     for cedula in CEDULAS:
@@ -70,17 +51,17 @@ def calcular_cedulas(valor):
 
     return quantidade_cedulas, valor
 
-
-# =========================
-# INÍCIO DO PROGRAMA
-# =========================
+# PROGRAMA INICIALIZANDO
 
 print("=" * 40)
 print("       CAIXA ELETRÔNICO")
 print("=" * 40)
 
-conta = input("Digite o número da conta: ")
-senha = input("Digite a senha: ")
+conta = input("Por favor, comece digitando o número da conta: ")
+senha = input("Agora, avance com a senha: ")
+
+# Senha solicitada, porém não validada.
+saldo = carregar_saldo(conta)
 
 # A senha é solicitada, mas não é validada.
 saldo = carregar_saldo(conta)
