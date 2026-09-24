@@ -63,108 +63,90 @@ senha = input("Agora, avance com a senha: ")
 # Senha solicitada, porém não validada.
 saldo = carregar_saldo(conta)
 
-# A senha é solicitada, mas não é validada.
-saldo = carregar_saldo(conta)
-
-print("\nAcesso realizado com sucesso!")
+print("\nAcesso permitido com sucesso!")
 
 while True:
     print("\n" + "=" * 40)
     print("MENU")
     print("=" * 40)
-    print("1 - Consultar saldo")
-    print("2 - Sacar dinheiro")
-    print("3 - Depositar dinheiro")
-    print("4 - Sair")
+    print("1 - Consulta de saldo")
+    print("2 - Saque Rápido")
+    print("3 - Deposite aqui o seu dinheiro")
+    print("4 - SAIR")
     print("=" * 40)
 
-    opcao = input("Escolha uma opção: ")
+    opcao = input("Escolha umas das quatro opções: ")
 
-    # CONSULTAR SALDO
+    # OPÇÃO 1 - CONSULTA DE SALDO
     if opcao == "1":
-        print(f"\nSeu saldo atual é: R$ {saldo:.2f}")
+        print(f"\nSeu saldo atual é de: R$ {saldo:.2f}")
 
-    # SACAR DINHEIRO
+    # OPÇÃO 2 - SAQUE RÁPIDO
     elif opcao == "2":
-        valor_texto = input("Digite o valor que deseja sacar: R$ ")
+        valor_texto = input("Digite o valor com o qual desejas sacar de sua conta: R$ ")
 
         try:
             valor = float(valor_texto.replace(",", "."))
-
             if valor < 0:
-                print("Erro: o valor do saque não pode ser negativo.")
-
-            elif not eh_valor_inteiro(valor):
-                print("Erro: o caixa não aceita valores fracionários.")
-
+                print("ERRO: o valor desse saque não poderá estar negativado.")
+            elif not consta_valor_inteiro(valor):
+                print("ERRO: este caixa não aceita valores fracionados.")
             elif valor == 0:
-                print("Erro: o valor do saque deve ser maior que zero.")
-
+                print("ERRO: a quantia sacada deve de ser superior a zero.")
             elif valor > saldo:
-                print("Erro: saldo insuficiente para realizar o saque.")
-
+                print("ERRO: quantia maior à que consta na conta.")
             else:
                 cedulas, resto = calcular_cedulas(valor)
 
-                # Se sobrar algum valor, o caixa não consegue formar o saque.
+                # Caso ocorra de sobrar um valor razoável, o caixa fica impossibilitado de formar o saque.
                 if resto != 0:
-                    print(
-                        "Erro: o caixa não possui cédulas suficientes "
-                        "para formar esse valor."
-                    )
-                    print(
-                        "Valores devem ser compatíveis com as cédulas "
-                        "disponíveis: R$ 100, R$ 50, R$ 20, R$ 10, R$ 5 e R$ 2."
-                    )
-
+                    print("ERRO: este caixa não possui a quantidade suficiente de cédulas disponíveis para formar o valor solicitado.")
+                    print("Os valores devem ser compatíveis com as cédulas já existentes: R$ 100, R$ 50, R$ 20, R$ 10, R$ 5 e R$ 2.")
                 else:
                     saldo -= valor
 
-                    print(f"\nSaque de R$ {valor:.2f} realizado com sucesso!")
-                    print("Cédulas entregues:")
+                    print(f"\nSaque solicitado de R$ {valor:.2f} efetuado com sucesso! Faça bom proveito!")
+                    print("Cédulas entregues ao cliente: ")
 
                     for cedula in CEDULAS:
                         quantidade = cedulas[cedula]
 
                         if quantidade > 0:
                             print(f"R$ {cedula}: {quantidade} cédula(s)")
-
+                            
                     print(f"Saldo restante: R$ {saldo:.2f}")
 
         except ValueError:
-            print("Erro: digite um valor numérico válido.")
+            print("ERRO: faça a digitação de uma quantia válida.")
 
-    # DEPOSITAR DINHEIRO
+    # OPÇÃO 3 - DEPOSITE AQUI O SEU DINHEIRO
     elif opcao == "3":
-        valor_texto = input("Digite o valor que deseja depositar: R$ ")
+        valor_texto = input("Digite a quantia desejável ao depósito: R$ ")
 
         try:
             valor = float(valor_texto.replace(",", "."))
-
             if valor < 0:
-                print("Erro: o valor do depósito não pode ser negativo.")
-
+                print("ERRO: o valor do depósito não poderá estar negativado.")
             elif valor == 0:
-                print("Erro: o valor do depósito deve ser maior que zero.")
-
+                print("ERRO: o depósito solicitado deve de ser superior a zero.")
             else:
                 saldo += valor
 
-                print(f"\nDepósito de R$ {valor:.2f} realizado com sucesso!")
+                print(f"\nDepósito solicitado de R$ {valor:.2f} efetuado com sucesso! Fique de olho nos rendimentos!")
                 print(f"Novo saldo: R$ {saldo:.2f}")
 
         except ValueError:
-            print("Erro: digite um valor numérico válido.")
+            print("ERRO: faça a digitação de uma quantia válida.")
 
-    # SAIR
+    # OPÇÃO 4 - SAIR
     elif opcao == "4":
         salvar_saldo(conta, saldo)
 
         print("\nOperação encerrada.")
         print(f"Saldo salvo: R$ {saldo:.2f}")
-        print("Obrigado por utilizar o caixa eletrônico!")
+        print("Obrigado pela preferência de usar o nosso caixa eletrônico! Até mais!")
         break
 
-    # OPÇÃO INVÁLIDA
+    # "OPÇÃO 5" - INVALIDAÇÃO
     else:
-        print("Erro: opção inválida. Escolha uma opção de 1 a 4.")
+        print("ERRO: opção invalidada. Por favor, escolha entre as opções ofertadas.")
