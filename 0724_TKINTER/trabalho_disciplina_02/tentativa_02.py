@@ -19,34 +19,6 @@ def buscar_saldo(conta): # Busca o saldo da conta no arquivo.
 
 def salvar_saldo(conta, saldo): # Salva/atualiza o saldo da conta no arquivo.
 
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-
-    
-        
-            
-
-            
-                
-
-    
-    
-
-
-def salvar_saldo(conta, saldo):
-    """Salva ou atualiza o saldo da conta no arquivo."""
     contas = {}
 
     if os.path.exists(ARQUIVO_SALDO):
@@ -63,9 +35,8 @@ def salvar_saldo(conta, saldo):
         for numero_conta, valor in contas.items():
             arquivo.write(f"{numero_conta};{valor}\n")
 
+def valor_valido(valor): # Verificação para certificar que o valor é inteiro e não negativo
 
-def valor_valido(valor):
-    """Verifica se o valor é inteiro e não negativo."""
     if valor < 0:
         return False
 
@@ -74,9 +45,8 @@ def valor_valido(valor):
 
     return True
 
+def realizar_saque(saldo): # Realiza o saque e informa a quantia de cada cédula.
 
-def realizar_saque(saldo):
-    """Realiza o saque e informa a quantidade de cada cédula."""
     valor = input("Digite o valor que deseja sacar: R$ ")
 
     try:
@@ -96,10 +66,10 @@ def realizar_saque(saldo):
             print("Erro: saldo insuficiente.")
             return saldo
 
-        # Cédulas disponíveis no caixa
+        # Cédulas disponíveis
         cedulas = [100, 50, 20, 10, 5, 2]
 
-        # Verifica se é possível formar o valor com as cédulas disponíveis
+        # Verificação para devolver o valor exato com as cédulas dispostas
         restante = valor
         quantidade_cedulas = {}
 
@@ -110,7 +80,7 @@ def realizar_saque(saldo):
 
         if restante != 0:
             print("Erro: o caixa não possui cédulas para formar esse valor.")
-            print("Digite um valor que possa ser formado pelas cédulas disponíveis.")
+            print("Digite um valor que possa ser formado e devolvido pelas cédulas.")
             return saldo
 
         # Atualiza o saldo
@@ -118,10 +88,26 @@ def realizar_saque(saldo):
 
         print("\nSaque realizado com sucesso!")
         print(f"Valor sacado: R$ {valor:.2f}")
-        print("Cédulas entregues:")
+        print("Cédulas entregues: ")
 
         for cedula in cedulas:
             quantidade = quantidade_cedulas[cedula]
+
+            
+
+
+
+
+
+
+
+
+    
+    
+        
+
+
+        
 
             if quantidade > 0:
                 print(f"R$ {cedula}: {quantidade} cédula(s)")
