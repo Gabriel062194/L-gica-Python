@@ -93,22 +93,6 @@ def realizar_saque(saldo): # Realiza o saque e informa a quantia de cada cédula
         for cedula in cedulas:
             quantidade = quantidade_cedulas[cedula]
 
-            
-
-
-
-
-
-
-
-
-    
-    
-        
-
-
-        
-
             if quantidade > 0:
                 print(f"R$ {cedula}: {quantidade} cédula(s)")
 
@@ -117,19 +101,18 @@ def realizar_saque(saldo): # Realiza o saque e informa a quantia de cada cédula
         return saldo
 
     except ValueError:
-        print("Erro: digite apenas valores numéricos.")
+        print("Erro: digite apenas valores númericos.")
         return saldo
 
+def realizar_deposito(saldo): # Efetua um depósito
 
-def realizar_deposito(saldo):
-    """Realiza um depósito."""
     valor = input("Digite o valor que deseja depositar: R$ ")
 
     try:
         valor = float(valor.replace(",", "."))
 
         if not valor_valido(valor):
-            print("Erro: o depósito não pode ser negativo ou fracionário.")
+            print("Erro: o depósito não pode ser negativado ou fracionado.")
             return saldo
 
         valor = int(valor)
@@ -151,9 +134,7 @@ def realizar_deposito(saldo):
         return saldo
 
 
-# =========================
 # INÍCIO DO PROGRAMA
-# =========================
 
 print("=" * 40)
 print("       CAIXA ELETRÔNICO")
@@ -161,7 +142,7 @@ print("=" * 40)
 
 conta = input("Digite o número da conta: ")
 
-# O número da conta é usado apenas para identificar o saldo.
+# O número da conta do usuário é usado apenas para fins de identificar o saldo.
 saldo = buscar_saldo(conta)
 
 print(f"\nConta acessada: {conta}")
@@ -197,4 +178,4 @@ while True:
         break
 
     else:
-        print("\nErro: opção inválida. Escolha uma opção de 1 a 4.")
+        print("\nErro: opção inválida! Escolha uma opção de 1 a 4.")
