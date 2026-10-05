@@ -1,1 +1,2 @@
 "C:\Program Files\Python313\python.exe" c:/Users/Aluno/Documents/L-gica-Python/0724_TKINTER/trabalho_disciplina_02/tentativa_02.py;250.00
+2920;1050.00
