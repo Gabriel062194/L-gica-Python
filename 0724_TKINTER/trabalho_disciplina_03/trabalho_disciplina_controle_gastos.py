@@ -186,5 +186,3 @@ def menu(): # Menu principal
 
 if __name__ == "__main__": # Início do programa
     menu()
-
-    
