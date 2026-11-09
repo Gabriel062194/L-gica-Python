@@ -63,29 +63,6 @@ def ler_inteiro(mensagem, minimo=None):
         except ValueError:
             print("Digite um número inteiro válido.")
 
-
-
-
-
-
-
-
-
-
-    
-    
-        
-        
-
-            
-        
-
-            
-
-        
-
-
-
 def ler_preco(mensagem):
     while True:
         try:
@@ -100,10 +77,7 @@ def ler_preco(mensagem):
         except ValueError:
             print("Digite um preço válido.")
 
-
-# ==========================================
 # CADASTRO DE PRODUTOS
-# ==========================================
 
 def cadastrar_produto():
     produtos = carregar_dados(ARQUIVO_PRODUTOS)
@@ -113,8 +87,17 @@ def cadastrar_produto():
     codigo = ler_inteiro("Código: ", 1)
 
     if buscar_produto(codigo):
-        print("Já existe um produto com esse código!")
+        print("Já existe um produto cadastrado com esse mesmo código! Por gentileza, insira um inédito.")
         return
+
+    nome = input("Nome do produto: ").strip()
+
+
+
+
+
+
+
 
     nome = input("Nome do produto: ").strip()
 
