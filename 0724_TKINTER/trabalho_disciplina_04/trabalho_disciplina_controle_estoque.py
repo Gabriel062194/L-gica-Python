@@ -92,17 +92,8 @@ def cadastrar_produto():
 
     nome = input("Nome do produto: ").strip()
 
-
-
-
-
-
-
-
-    nome = input("Nome do produto: ").strip()
-
     if not nome:
-        print("O nome é obrigatório!")
+        print("O nome é de caráter obrigatório!")
         return
 
     quantidade = ler_inteiro("Quantidade inicial: ", 0)
@@ -120,8 +111,7 @@ def cadastrar_produto():
     produtos.append(produto)
 
     if salvar_dados(ARQUIVO_PRODUTOS, produtos):
-        print("Produto cadastrado com sucesso!")
-
+        print("Produto registrado com sucesso!")
 
 def listar_produtos():
     produtos = carregar_dados(ARQUIVO_PRODUTOS)
@@ -129,24 +119,23 @@ def listar_produtos():
     print("\n===== LISTA DE PRODUTOS =====")
 
     if not produtos:
-        print("Nenhum produto cadastrado.")
+        print("Nenhum produto foi cadastrado.")
         return
 
     print("-" * 75)
-    print(f"{'Código':<10}{'Nome':<25}{'Quantidade':<15}{'Mínimo':<10}{'Preço':<10}")
+    print(f"{"Código":<10}{"Nome":<25}{"Quantidade":<15}{"Mínimo":<10}{"Preço":<10}")
     print("-" * 75)
 
     for p in produtos:
         print(
-            f"{p['codigo']:<10}"
-            f"{p['nome']:<25}"
-            f"{p['quantidade']:<15}"
-            f"{p['estoque_minimo']:<10}"
-            f"R$ {p['preco']:.2f}"
+            f"{p["codigo"]:<10}"
+            f"{p["nome"]:<25}"
+            f"{p["quantidade"]:<15}"
+            f"{p["estoque_minimo"]:<10}"
+            f"R$ {p["preco"]:.2f}"
         )
 
     print("-" * 75)
-
 
 def alterar_produto():
     produtos = carregar_dados(ARQUIVO_PRODUTOS)
@@ -158,9 +147,9 @@ def alterar_produto():
     for produto in produtos:
         if produto["codigo"] == codigo:
 
-            print(f"Produto encontrado: {produto['nome']}")
+            print(f"Produto encontrado: {produto["nome"]}")
 
-            nome = input("Novo nome (Enter mantém): ").strip()
+            nome = input("Novo nome (ENTER mantém): ").strip()
             if nome:
                 produto["nome"] = nome
 
@@ -175,8 +164,7 @@ def alterar_produto():
 
             return
 
-    print("Produto não encontrado!")
-
+    print("Produto não encontrado em nosso sistema!")
 
 def excluir_produto():
     produtos = carregar_dados(ARQUIVO_PRODUTOS)
@@ -189,7 +177,7 @@ def excluir_produto():
         if produto["codigo"] == codigo:
 
             confirmacao = input(
-                f"Confirma excluir {produto['nome']}? (S/N): "
+                f"Confirma a exclusão de {produto["nome"]}? (S/N): "
             ).upper()
 
             if confirmacao == "S":
@@ -202,10 +190,7 @@ def excluir_produto():
 
     print("Produto não encontrado!")
 
-
-# ==========================================
 # MOVIMENTAÇÃO DE ESTOQUE
-# ==========================================
 
 def registrar_movimentacao(tipo):
     produtos = carregar_dados(ARQUIVO_PRODUTOS)
@@ -220,6 +205,38 @@ def registrar_movimentacao(tipo):
         if p["codigo"] == codigo:
             produto = p
             break
+
+    if produto is None:
+        print("Produto não encontrado!")
+        return
+
+    print(f"Produto: {produto["nome"]}")
+    print(f"Estoque atual: {produto["quantidade"]}")
+
+    quantidade = ler_inteiro("Quantidade: ", 1)
+
+    if tipo == "SAÍDA":
+        if quantidade > produto["quantidade"]:
+            print("ERRO: estoque insuficiente!")
+            return
+
+        produto["quantidade"] -= quantidade
+
+    else:
+        produto["quantidade"] += quantidade
+
+    movimentacoes = carregar_dados(ARQUIVO_MOVIMENTACOES)
+            
+
+
+            
+            
+                            
+            
+                        
+                            
+            
+                        
 
     if produto is None:
         print("Produto não encontrado!")
