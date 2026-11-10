@@ -226,6 +226,16 @@ def registrar_movimentacao(tipo):
         produto["quantidade"] += quantidade
 
     movimentacoes = carregar_dados(ARQUIVO_MOVIMENTACOES)
+
+    movimentacao = {
+        "codigo_produto": codigo,
+        "nome_produto": produto["nome"],
+        "tipo": tipo,
+        "quantidade": quantidade,
+        "data": datetime.now().strftime("%d/%m/%y")
+    }
+
+
             
 
 
@@ -238,26 +248,15 @@ def registrar_movimentacao(tipo):
             
                         
 
-    if produto is None:
-        print("Produto não encontrado!")
-        return
+    
+    
 
-    print(f"Produto: {produto['nome']}")
-    print(f"Estoque atual: {produto['quantidade']}")
+    
 
-    quantidade = ler_inteiro("Quantidade: ", 1)
+    
+        
 
-    if tipo == "SAÍDA":
-        if quantidade > produto["quantidade"]:
-            print("Erro: estoque insuficiente!")
-            return
-
-        produto["quantidade"] -= quantidade
-
-    else:
-        produto["quantidade"] += quantidade
-
-    movimentacoes = carregar_dados(ARQUIVO_MOVIMENTACOES)
+    
 
     movimentacao = {
         "codigo_produto": codigo,
