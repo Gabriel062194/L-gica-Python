@@ -232,60 +232,23 @@ def registrar_movimentacao(tipo):
         "nome_produto": produto["nome"],
         "tipo": tipo,
         "quantidade": quantidade,
-        "data": datetime.now().strftime("%d/%m/%y")
-    }
-
-
-            
-
-
-            
-            
-                            
-            
-                        
-                            
-            
-                        
-
-    
-    
-
-    
-
-    
-        
-
-    
-
-    movimentacao = {
-        "codigo_produto": codigo,
-        "nome_produto": produto["nome"],
-        "tipo": tipo,
-        "quantidade": quantidade,
         "data": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     }
 
     movimentacoes.append(movimentacao)
 
-    # Salva os dois arquivos
-    if salvar_dados(ARQUIVO_PRODUTOS, produtos):
+    if salvar_dados(ARQUIVO_PRODUTOS, produtos): # Vai salvar os dois arquivos
         if salvar_dados(ARQUIVO_MOVIMENTACOES, movimentacoes):
-            print(f"{tipo} registrada com sucesso!")
-            print(f"Novo estoque: {produto['quantidade']}")
-
+            print(f"{tipo} registrada com absoluto êxito!")
+            print(f"Novo estoque: {produto["quantidade"]}")
 
 def registrar_entrada():
     registrar_movimentacao("ENTRADA")
 
-
 def registrar_saida():
     registrar_movimentacao("SAÍDA")
 
-
-# ==========================================
 # CONSULTA DE ESTOQUE
-# ==========================================
 
 def consultar_produto():
     print("\n===== CONSULTAR PRODUTO =====")
@@ -325,12 +288,49 @@ def consultar_produto():
         print("Nome:", p["nome"])
         print("Quantidade:", p["quantidade"])
         print("Estoque mínimo:", p["estoque_minimo"])
-        print(f"Preço: R$ {p['preco']:.2f}")
+        print(f"Preço: R$ {p["preco"]:.2f}")
+
+# PRODUTOS COM ESTOQUE LIMITADO
+
+def produtos_estoque_baixo():
+    produtos = carregar_dados(ARQUIVO_PRODUTOS)
+
+    print("\n===== PRODUTOS COM ESTOQUE BAIXO =====")
+
+    encontrados = False
+
+    for p in produtos:
+
+        if p["quantidade"] <= p["estoque_minimo"]:
+
+            
 
 
-# ==========================================
-# PRODUTOS COM ESTOQUE BAIXO
-# ==========================================
+            
+
+
+            
+
+
+    
+
+    
+
+
+    
+        
+
+
+    
+        
+        
+        
+    
+
+
+
+
+
 
 def produtos_estoque_baixo():
     produtos = carregar_dados(ARQUIVO_PRODUTOS)
