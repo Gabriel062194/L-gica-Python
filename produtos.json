@@ -1,0 +1,9 @@
+[
+    {
+        "codigo": 2920,
+        "nome": "AÇAÍ",
+        "quantidade": 5,
+        "estoque_minimo": 3,
+        "preco": 5.0
+    }
+]

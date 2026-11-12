@@ -303,66 +303,23 @@ def produtos_estoque_baixo():
 
         if p["quantidade"] <= p["estoque_minimo"]:
 
-            
-
-
-            
-
-
-            
-
-
-    
-
-    
-
-
-    
-        
-
-
-    
-        
-        
-        
-    
-
-
-
-
-
-
-def produtos_estoque_baixo():
-    produtos = carregar_dados(ARQUIVO_PRODUTOS)
-
-    print("\n===== PRODUTOS COM ESTOQUE BAIXO =====")
-
-    encontrados = False
-
-    for p in produtos:
-
-        if p["quantidade"] <= p["estoque_minimo"]:
-
             encontrados = True
 
             print(
-                f"Produto: {p['nome']} | "
-                f"Quantidade: {p['quantidade']} | "
-                f"Mínimo: {p['estoque_minimo']}"
+                f"Produto: {p["nome"]} | "
+                f"Quantidade: {p["quantidade"]} | "
+                f"Mínimo: {p["estoque_minimo"]}"
             )
 
     if not encontrados:
-        print("Nenhum produto com estoque baixo!")
+        print("Nenhum produto foi vistoriado com estoque baixo.")
 
-
-# ==========================================
 # RELATÓRIO DE MOVIMENTAÇÕES
-# ==========================================
 
 def relatorio_movimentacoes():
     movimentacoes = carregar_dados(ARQUIVO_MOVIMENTACOES)
 
-    print("\n===== RELATÓRIO DE MOVIMENTAÇÕES =====")
+    print("\n===== RELATÓRIO DE TRANSAÇÕES =====")
 
     if not movimentacoes:
         print("Nenhuma movimentação registrada.")
@@ -370,16 +327,13 @@ def relatorio_movimentacoes():
 
     for m in movimentacoes:
         print(
-            f"Data: {m['data']} | "
-            f"Produto: {m['nome_produto']} | "
-            f"Tipo: {m['tipo']} | "
-            f"Quantidade: {m['quantidade']}"
+            f"Data: {m["data"]} | "
+            f"Produto: {m["nome_produto"]} | "
+            f"Tipo: {m["tipo"]} | "
+            f"Quantidade: {m["quantidade"]}"
         )
 
-
-# ==========================================
 # MENU PRINCIPAL
-# ==========================================
 
 def menu():
     while True:
@@ -396,13 +350,13 @@ def menu():
         print("5 - Registrar entrada")
         print("6 - Registrar saída")
         print("7 - Consultar produto")
-        print("8 - Produtos com estoque baixo")
+        print("8 - Produtos com estoque limitado")
         print("9 - Relatório de movimentações")
         print("0 - Sair")
 
         print("=" * 45)
 
-        opcao = input("Escolha uma opção: ")
+        opcao = input("Escolha uma opção daquelas ofertadas: ")
 
         if opcao == "1":
             cadastrar_produto()
@@ -432,16 +386,13 @@ def menu():
             relatorio_movimentacoes()
 
         elif opcao == "0":
-            print("Sistema encerrado. Até logo!")
+            print("Sistema encerrado. Até breve!")
             break
 
         else:
-            print("Opção inválida! Tente novamente.")
+            print("Opção invalidada! Tente de novo.")
 
-
-# ==========================================
 # EXECUÇÃO DO SISTEMA
-# ==========================================
 
 if __name__ == "__main__":
     menu()
