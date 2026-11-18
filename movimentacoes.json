@@ -5,5 +5,19 @@
         "valor": 2268.34,
         "tipo": "Receita",
         "data": "04/11/2026 19:39"
+    },
+    {
+        "codigo_produto": 2920,
+        "nome_produto": "AÇAÍ",
+        "tipo": "ENTRADA",
+        "quantidade": 2,
+        "data": "18/11/2026 19:15:54"
+    },
+    {
+        "codigo_produto": 2920,
+        "nome_produto": "AÇAÍ",
+        "tipo": "SAÍDA",
+        "quantidade": 8,
+        "data": "18/11/2026 19:16:17"
     }
 ]
