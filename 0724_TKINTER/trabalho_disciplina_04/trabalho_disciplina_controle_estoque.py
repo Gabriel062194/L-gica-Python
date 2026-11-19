@@ -395,7 +395,4 @@ def menu():
 # EXECUÇÃO DO SISTEMA
 
 if __name__ == "__main__":
-    menu()
-
-
-    
+    menu()  

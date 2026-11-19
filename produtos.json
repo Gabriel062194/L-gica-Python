@@ -5,5 +5,12 @@
         "quantidade": 4,
         "estoque_minimo": 20,
         "preco": 5.0
+    },
+    {
+        "codigo": 2029,
+        "nome": "HOT WHEELS",
+        "quantidade": 65,
+        "estoque_minimo": 10,
+        "preco": 8.0
     }
 ]
